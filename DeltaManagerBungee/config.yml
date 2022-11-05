@@ -1,0 +1,61 @@
+debug: false
+
+ZoneId: 'Europe/Paris'
+nopermission: '&cYou don''t have permission to use this command'
+
+logs:
+  login:
+    enabled: true
+    message: '&8[&a+&8]&f %player%'
+  switch:
+    enabled: true
+    message: '&8[&e●&8]&f %player%§7 switched §f%from%&7 &m--➔&f %to%'
+  disconnect:
+    enabled: true
+    message: '&8[&c-&8]&f %player%'
+  nomoreplayers:
+    enabled: true
+    message: 'There are no more players online'
+
+webhook:
+  # Is used when you leave the default url or you were "none"
+  default-url: 'https://discord.com/api/webhooks/****/****'
+  
+  login:
+    enabled: false
+    url: 'https://discord.com/api/webhooks/****/****'
+    show-ip: false
+  switch:
+    enabled: false
+    url: 'https://discord.com/api/webhooks/****/****'
+  disconnect:
+    enabled: false
+    url: 'https://discord.com/api/webhooks/****/****'
+  nomoreplayers:
+    enabled:
+    url: 'https://discord.com/api/webhooks/****/****'
+    content: 'There are no more players online'
+
+
+save-connexion:
+  enabled: false
+  reason: 'server closed'
+  list:
+  - lobby
+  - lobby01
+  - lobby02
+  message:
+  - '&7&m---------------------------------------------'
+  - '&cLe serveur sur lequel vous étiez est maintenant fermé ou redémarre,'
+  - '&cvous avez donc été téléporté au Lobby.'
+  - '&7&m---------------------------------------------'
+  
+  # Kick message (if there is no Lobby available or present on a Lobby)
+  kick-message:
+  - '&7&m---------------------------------------------'
+  - '&cLe serveur sur lequel vous étiez est maintenant fermé'
+  - ''
+  - '&6Aucun Lobby disponible pour la connexion'
+  - ''
+  - '&eVeuillez réessayer plus tard'
+  - '&7&m---------------------------------------------'

@@ -1,0 +1,10 @@
+name: DeltaManager
+version: 1.0.0
+author: Baba
+main: fr.baba.deltamanager.Main
+
+commands:
+  deltamanager:
+    description: DeltaManager
+    permission: deltamanager.admin
+    aliases: [dm]
