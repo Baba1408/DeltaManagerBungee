@@ -6,6 +6,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="D:/Document/Documents/Plugins-Minecraft/waterfall-1.19-504.jar"/>
+	<classpathentry kind="lib" path="D:/Document/Documents/Plugins-Minecraft/BungeeCord.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
