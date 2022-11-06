@@ -36,7 +36,7 @@ public class DeltaManager extends Command {
 				String[] x = w.split("#");
 				msg = msg + "§6" + x[0] + "§r §8§l•§r §e" + x[1] + "§r\n";
 			}
-		
+			
 			msg = msg + line;
 			sender.sendMessage(msg);
 			
