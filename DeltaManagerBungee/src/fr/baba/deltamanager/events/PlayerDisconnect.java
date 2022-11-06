@@ -80,7 +80,7 @@ public class PlayerDisconnect implements Listener {
 					webhook.execute();
 				} catch (IOException e1) {
 					e1.printStackTrace();
-					ProxyServer.getInstance().getConsole().sendMessage("[DeltaManagerBungee] Error while sending the Webhook" + e.toString());
+					ProxyServer.getInstance().getConsole().sendMessage("[DeltaManagerBungee] Error while sending the Webhook " + e.toString());
 				}
 			});
 		}
