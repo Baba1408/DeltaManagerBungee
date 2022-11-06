@@ -63,7 +63,9 @@ public class PlayerDisconnect implements Listener {
 			});
 		}
 		
-		if(ProxyServer.getInstance().getPlayers().size() > 0) return;
+		if(ProxyServer.getInstance().getPlayers().contains(p)){
+			if(ProxyServer.getInstance().getPlayers().size() > 1) return;
+		} else if(ProxyServer.getInstance().getPlayers().size() > 0) return;
 		
 		if(Config.getConfig().getBoolean("logs.nomoreplayers.enabled")){
 			ProxyServer.getInstance().getConsole().sendMessage(Config.getConfig().getString("logs.nomoreplayers.message")
