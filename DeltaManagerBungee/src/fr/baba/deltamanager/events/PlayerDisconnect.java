@@ -36,7 +36,7 @@ public class PlayerDisconnect implements Listener {
 					.replace("&", "§"));
 		}
 		
-		if(Config.getConfig().getBoolean("logs.nomoreplayers.enabled")){
+		if(Config.getConfig().getBoolean("logs.nomoreplayers.enabled") && ProxyServer.getInstance().getPlayers().size() == 0){
 			ProxyServer.getInstance().getConsole().sendMessage(Config.getConfig().getString("logs.nomoreplayers.message")
 					.replace("%player%", p.getName())
 					.replace("%server%", lsrv)
