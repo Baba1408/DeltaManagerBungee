@@ -38,7 +38,6 @@ public class DeltaManager extends Command {
 			}
 			
 			msg = msg + line;
-			
 			sender.sendMessage(msg);
 			
 			return;
