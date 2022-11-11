@@ -50,6 +50,8 @@ public class ServerKick implements Listener {
 								msg = line;
 							} else msg = msg + line;
 						}
+			        	
+			        	msg = msg.replace("&", "§");
 
 			        	e.getPlayer().sendMessage(msg);
 			        	return;
@@ -68,6 +70,8 @@ public class ServerKick implements Listener {
 						msg = line;
 					} else msg = msg + line;
 				}
+				
+				msg = msg.replace("&", "§");
 				
 				e.setKickReason(msg);
 			}
