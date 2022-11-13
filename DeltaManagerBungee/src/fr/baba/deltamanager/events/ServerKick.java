@@ -70,7 +70,7 @@ public class ServerKick implements Listener {
 				for(String line : Config.getConfig().getStringList("save-connexion.kick-message")){
 					if(msg == null){
 						msg = line;
-					} else msg = msg + line;
+					} else msg = msg + "\n" + line;
 				}
 				
 				msg = msg.replace("&", "§");
