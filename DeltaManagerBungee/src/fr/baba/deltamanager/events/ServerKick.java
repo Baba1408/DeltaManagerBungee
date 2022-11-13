@@ -29,6 +29,8 @@ public class ServerKick implements Listener {
 						break;
 					}
 				}
+				
+				if(onlobby) break;
 			}
 			
 			if(!onlobby){
