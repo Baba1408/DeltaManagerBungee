@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import fr.baba.deltamanager.commands.DeltaManager;
 import fr.baba.deltamanager.events.PlayerDisconnect;
 import fr.baba.deltamanager.events.PlayerLogin;
+import fr.baba.deltamanager.events.PostLogin;
 import fr.baba.deltamanager.events.ServerKick;
 import fr.baba.deltamanager.events.ServerSwitch;
+import fr.baba.deltamanager.managers.MonitorManager;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
@@ -79,6 +81,16 @@ public class Main extends Plugin {
 			pm.registerListener(instance, new PlayerDisconnect());
 			events.add("PlayerDisconnect");
 			cs.sendMessage("PlayerDisconnect event started");
+		}
+		
+		if(Config.getConfig().getBoolean("monitor.enabled")){
+			MonitorManager.init();
+			
+			if(Config.getConfig().getBoolean("monitor.notify.on-join.enabled") && !events.contains("PostLogin")){
+				pm.registerListener(instance, new PostLogin());
+				events.add("PostLogin");
+				cs.sendMessage("PlayerDisconnect event started");
+			}
 		}
 	}
 }

@@ -59,3 +59,36 @@ save-connexion:
   - ''
   - '&eVeuillez réessayer plus tard'
   - '&7&m---------------------------------------------'
+
+
+monitor:
+  enabled: true
+  interval: 120 #seconds
+  
+  #The server must be detected x times offline before being notified (to avoid simple restarts)
+  detected-offline: 2
+  
+  # If this option is enabled, server-list does not need to be completed
+  check-all-servers: true
+  server-list:
+  - lobby01
+  - lobby02
+  - lobby03
+  - practice
+  - bedwars
+  
+  notify:
+    #permission: deltamanager.monitor.alerts
+    
+    on-join:
+      enabled: true
+      message: '&cOffline servers :%servers%'
+      servers: "\n&c- %server%"
+    
+    offline:
+      enabled: true
+      message: '&c%server% server is now offline'
+    
+    back-online:
+      enabled: true
+      message: '&a%server% server is back online'

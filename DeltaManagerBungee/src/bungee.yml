@@ -8,3 +8,7 @@ commands:
     description: DeltaManager
     permission: deltamanager.admin
     aliases: [dm]
+
+permissions:
+  deltamanager.monitor.alerts:
+    description: Receive servers monitoring alerts
