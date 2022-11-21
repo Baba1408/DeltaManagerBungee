@@ -65,18 +65,18 @@ public class ServerKick implements Listener {
 						//e.setKickReason("§cConnexion au Lobby impossible\n&cVeuillez réessayer plus tard");
 					}
 				}
-				
-				String msg = null;
-				for(String line : Config.getConfig().getStringList("save-connexion.kick-message")){
-					if(msg == null){
-						msg = line;
-					} else msg = msg + "\n" + line;
-				}
-				
-				msg = msg.replace("&", "§");
-				
-				e.setKickReason(msg);
 			}
+			
+			String msg = null;
+			for(String line : Config.getConfig().getStringList("save-connexion.kick-message")){
+				if(msg == null){
+					msg = line;
+				} else msg = msg + "\n" + line;
+			}
+			
+			msg = msg.replace("&", "§");
+			
+			e.setKickReason(msg);
 		}
 	}
 }
