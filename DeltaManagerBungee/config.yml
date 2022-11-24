@@ -1,7 +1,13 @@
 debug: false
 
+# See: https://timezonedb.com/time-zones
 ZoneId: 'Europe/Paris'
 nopermission: '&cYou don''t have permission to use this command'
+spacers: [' ', ', ', ' and ']
+date:
+  format:
+    plural: ['years', 'months', 'days', 'hours', 'minutes', 'seconds']
+    singular: ['year', 'month', 'day', 'hour', 'minute', 'second']
 
 logs:
   login:
@@ -80,15 +86,39 @@ monitor:
   notify:
     #permission: deltamanager.monitor.alerts
     
+    show-seconds: false
+    no-seconds: 'less than one minute'
+    
     on-join:
       enabled: true
-      message: '&cOffline servers :%servers%'
-      servers: "\n&c- %server%"
+      message: '&1[&3DeltaManager&1]&c Offline servers :%servers%'
+      servers: "\n&c- &4%server%&c since %duration%"
     
     offline:
-      enabled: true
-      message: '&c%server% server is now offline'
+      log:
+        enabled: true
+        log: '&4%server%&c server is now offline'
+      staff-message: '&1[&3DeltaManager&1]&4 %server%&c server is now offline'
+      webhook:
+        enabled: false
+        url: 'https://discord.com/api/webhooks/****/****'
+        author: 'Server monitoring'
+        authoricon: 'https://deltamc.fr/storage/img/server.png'
+        title: '%server% server is now offline'
     
     back-online:
-      enabled: true
-      message: '&a%server% server is back online'
+      log:
+        enabled: true
+        log: '&2%server%&a server is back online after %duration%'
+      staff-message: '&1[&3DeltaManager&1]&2 %server%&a server is back online after %duration%'
+      webhook:
+        enabled: false
+        url: 'https://discord.com/api/webhooks/****/****'
+        author: 'Server monitoring'
+        authoricon: 'https://deltamc.fr/storage/img/server.png'
+        title: '%server% server is back online after %duration%'
+
+
+
+
+

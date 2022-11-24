@@ -1,10 +1,13 @@
 package fr.baba.deltamanager.events;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
 import fr.baba.deltamanager.Config;
 import fr.baba.deltamanager.Main;
 import fr.baba.deltamanager.managers.MonitorManager;
+import fr.baba.deltamanager.utils.TimeUtils;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PostLoginEvent;
@@ -26,13 +29,15 @@ public class PostLogin implements Listener {
 					String servers = null;
 					if(msg.contains("%servers%")){
 						for(String name : MonitorManager.getOffline()){
+							String date = TimeUtils.format(Duration.between(MonitorManager.getInstant(name), Instant.now()));
+							
 							if(servers == null){
 								servers = Config.getConfig().getString("monitor.notify.on-join.servers")
 										.replace("%server%", name)
-										.replace("\n", "\n");
+										.replace("%duration%", date);
 							} else servers = servers + Config.getConfig().getString("monitor.notify.on-join.servers")
 									.replace("%server%", name)
-									.replace("\n", "\n");
+									.replace("%duration%", date);
 						}
 					}
 					
