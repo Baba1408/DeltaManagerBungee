@@ -21,8 +21,7 @@ public class TimeUtils {
 	    d = d.minusMinutes(minutes);
 	    long seconds = d.getSeconds();
 	    
-	    return
-	    		(days != 1?"":days + spacer.get(0) + singular.get(2) + spacer.get(1))
+	    String m = (days != 1?"":days + spacer.get(0) + singular.get(2) + spacer.get(1))
 	    		+ (days <= 1?"":days + spacer.get(0) + plural.get(2) + spacer.get(1))
 	    		+ (hours != 1?"":hours + spacer.get(0) + singular.get(3) + spacer.get(1))
 	    		+ (hours <= 1?"":hours + spacer.get(0) + plural.get(3) + spacer.get(1))
@@ -30,5 +29,7 @@ public class TimeUtils {
 	    		+ (minutes <= 1?"":minutes + spacer.get(0) + plural.get(4) + spacer.get(1))
 	    		+ (seconds != 1 || !Config.getConfig().getBoolean("monitor.notify.show-seconds")?"":seconds + spacer.get(0) + singular.get(5))
 	    		+ (seconds <= 1 || !Config.getConfig().getBoolean("monitor.notify.show-seconds")?"":seconds + spacer.get(0) + plural.get(5));
+	    
+	    return m.substring(0, m.length() - spacer.get(1).length());
 	}
 }
