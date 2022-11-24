@@ -27,8 +27,8 @@ public class TimeUtils {
 	    		+ (hours <= 1?"":hours + spacer.get(0) + plural.get(3) + spacer.get(1))
 	    		+ (minutes != 1?"":minutes + spacer.get(0) + singular.get(4) + spacer.get(1))
 	    		+ (minutes <= 1?"":minutes + spacer.get(0) + plural.get(4) + spacer.get(1))
-	    		+ (seconds != 1 || !Config.getConfig().getBoolean("monitor.notify.show-seconds")?"":seconds + spacer.get(0) + singular.get(5))
-	    		+ (seconds <= 1 || !Config.getConfig().getBoolean("monitor.notify.show-seconds")?"":seconds + spacer.get(0) + plural.get(5));
+	    		+ (seconds != 1 || !Config.getConfig().getBoolean("monitor.notify.show-seconds")?"":seconds + spacer.get(0) + singular.get(5) + spacer.get(1))
+	    		+ (seconds <= 1 || !Config.getConfig().getBoolean("monitor.notify.show-seconds")?"":seconds + spacer.get(0) + plural.get(5) + spacer.get(1));
 	    
 	    return m.substring(0, m.length() - spacer.get(1).length());
 	}
