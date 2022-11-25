@@ -35,6 +35,7 @@ public class Main extends Plugin {
 		
 		//Commands
 		pm.registerCommand(this, new DeltaManager("deltamanager"));
+		pm.registerCommand(this, new DeltaManager("dm"));
 		
 		load();
 	}
