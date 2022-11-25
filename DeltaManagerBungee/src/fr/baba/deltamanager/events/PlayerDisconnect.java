@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeUnit;
 
 import fr.baba.deltamanager.Config;
 import fr.baba.deltamanager.Main;
@@ -63,21 +64,22 @@ public class PlayerDisconnect implements Listener {
 			});
 		}
 		
-		if(ProxyServer.getInstance().getPlayers().contains(p)){
-			if(ProxyServer.getInstance().getPlayers().size() > 1) return;
-		} else if(ProxyServer.getInstance().getPlayers().size() > 0) return;
+		if(ProxyServer.getInstance().getPlayers().size() <= 1) return;
 		
-		if(Config.getConfig().getBoolean("logs.nomoreplayers.enabled")){
-			ProxyServer.getInstance().getConsole().sendMessage(Config.getConfig().getString("logs.nomoreplayers.message")
-					.replace("%player%", p.getName())
-					.replace("%server%", lsrv)
-					.replace("&", "§"));
-		}
-		
-		if(Config.getConfig().getBoolean("webhook.nomoreplayers.enabled")){
-			ProxyServer.getInstance().getScheduler().runAsync(main, () -> {
+		ProxyServer.getInstance().getScheduler().schedule(main, () -> {
+			if(ProxyServer.getInstance().getPlayers().contains(p)){
+				if(ProxyServer.getInstance().getPlayers().size() > 1) return;
+			} else if(ProxyServer.getInstance().getPlayers().size() > 0) return;
+			
+			if(Config.getConfig().getBoolean("logs.nomoreplayers.enabled")){
+				ProxyServer.getInstance().getConsole().sendMessage(Config.getConfig().getString("logs.nomoreplayers.message")
+						.replace("%player%", p.getName())
+						.replace("%server%", lsrv)
+						.replace("&", "§"));
+			}
+			
+			if(Config.getConfig().getBoolean("webhook.nomoreplayers.enabled")){
 				Webhook webhook = new Webhook(Config.getConfig().getString("webhook.nomoreplayers.url"));
-				
 				webhook.setContent(Config.getConfig().getString("webhook.nomoreplayers.content"));
 				
 				try {
@@ -86,7 +88,7 @@ public class PlayerDisconnect implements Listener {
 					e1.printStackTrace();
 					ProxyServer.getInstance().getConsole().sendMessage("[DeltaManagerBungee] Error while sending the Webhook " + e.toString());
 				}
-			});
-		}
+			}
+		}, 2, TimeUnit.SECONDS);
 	}
 }
