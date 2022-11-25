@@ -91,14 +91,14 @@ monitor:
     
     on-join:
       enabled: true
-      message: '&2&l[&aDeltaManager&2&l]&c Offline servers :%servers%'
+      message: '&2&l[&a&lDeltaManager&2&l]&c Offline servers :%servers%'
       servers: "\n&c- &4%server%&c since %duration%"
     
     offline:
       log:
         enabled: true
         log: '&4%server%&c server is now offline'
-      staff-message: '&2&l[&aDeltaManager&2&l]&4 %server%&c server is now offline'
+      staff-message: '&2&l[&a&lDeltaManager&2&l]&4 %server%&c server is now offline'
       webhook:
         enabled: false
         url: 'https://discord.com/api/webhooks/****/****'
@@ -110,7 +110,7 @@ monitor:
       log:
         enabled: true
         log: '&2%server%&a server is back online after %duration%'
-      staff-message: '&2&l[&aDeltaManager&2&l]&2 %server%&a server is back online after %duration%'
+      staff-message: '&2&l[&a&lDeltaManager&2&l]&2 %server%&a server is back online after %duration%'
       webhook:
         enabled: false
         url: 'https://discord.com/api/webhooks/****/****'
