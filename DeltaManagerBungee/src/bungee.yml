@@ -10,5 +10,11 @@ commands:
     aliases: [dm]
 
 permissions:
+  deltamanager.admin:
+    description: All permissions for DeltaManger
+    children:
+      deltamanager.monitor.alerts: true
+
   deltamanager.monitor.alerts:
     description: Receive servers monitoring alerts
+    
