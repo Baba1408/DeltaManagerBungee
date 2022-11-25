@@ -64,7 +64,7 @@ public class PlayerDisconnect implements Listener {
 			});
 		}
 		
-		if(ProxyServer.getInstance().getPlayers().size() <= 1) return;
+		if(ProxyServer.getInstance().getPlayers().size() > 1) return;
 		
 		ProxyServer.getInstance().getScheduler().schedule(main, () -> {
 			if(ProxyServer.getInstance().getPlayers().contains(p)){
