@@ -52,18 +52,20 @@ save-connexion:
   - lobby02
   message:
   - '&7&m---------------------------------------------'
-  - '&cLe serveur sur lequel vous étiez est maintenant fermé ou redémarre,'
-  - '&cvous avez donc été téléporté au Lobby.'
+  - '&cThe server you were on is now closed or restarting.'
+  - '&cSo you have been teleported to the Lobby.'
   - '&7&m---------------------------------------------'
   
   # Kick message (if there is no Lobby available or present on a Lobby)
   kick-message:
   - '&7&m---------------------------------------------'
-  - '&cLe serveur sur lequel vous étiez est maintenant fermé'
   - ''
-  - '&6Aucun Lobby disponible pour la connexion'
+  - '&cThe server you were on is now closed'
   - ''
-  - '&eVeuillez réessayer plus tard'
+  - '&6No Lobby available for the connection'
+  - ''
+  - '&ePlease try again later'
+  - ''
   - '&7&m---------------------------------------------'
 
 
