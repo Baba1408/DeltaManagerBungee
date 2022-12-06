@@ -25,9 +25,9 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 
 public class MonitorManager {
+	private static Main main = Main.getInstance();
 	static Map<String, Integer> status = new HashMap<>();
 	static Map<String, Instant> dates = new HashMap<>();
-	private static Main main = Main.getInstance();
 	
 	public static void init(){
 		if(Config.getConfig().getInt("monitor.interval") <= 1){

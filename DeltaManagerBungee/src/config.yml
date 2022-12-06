@@ -119,3 +119,11 @@ monitor:
         author: 'Server monitoring'
         authoricon: 'https://deltamc.fr/storage/img/server.png'
         title: '**%server%** server is back online after **%duration%**'
+
+updater:
+  enabled: true
+  staff-message:
+    cooldown: 3 # seconds after connection to send the message, -1 to not send
+    message: '&2&l[&a&lDeltaManager&2&l]&4A new version of the plugin is available for download.'
+    reminder-versions: true
+    show-link: true

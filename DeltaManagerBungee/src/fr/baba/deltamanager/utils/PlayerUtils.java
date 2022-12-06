@@ -7,8 +7,9 @@ public class PlayerUtils {
 
 	@SuppressWarnings("deprecation")
 	public static void broadcast(String msg, String perm){
-		for(ProxiedPlayer p : ProxyServer.getInstance().getPlayers()){
-			
+		if(perm == null || perm.isEmpty()){
+			ProxyServer.getInstance().broadcast(msg);
+		} else for(ProxiedPlayer p : ProxyServer.getInstance().getPlayers()){
 			if(p.hasPermission(perm)) p.sendMessage(msg);
 		}
 	}

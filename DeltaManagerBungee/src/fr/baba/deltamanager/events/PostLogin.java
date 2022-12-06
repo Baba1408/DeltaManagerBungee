@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import fr.baba.deltamanager.Config;
 import fr.baba.deltamanager.Main;
 import fr.baba.deltamanager.managers.MonitorManager;
+import fr.baba.deltamanager.managers.UpdatesManager;
 import fr.baba.deltamanager.utils.TimeUtils;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -20,6 +21,7 @@ public class PostLogin implements Listener {
 	@EventHandler
 	public void onPostLogin(PostLoginEvent e){
 		ProxiedPlayer p = e.getPlayer();
+		if(!p.hasPermission("deltamanager.monitor.alerts")) return;
 		
 		if(!MonitorManager.getOffline().isEmpty()){
 			ProxyServer.getInstance().getScheduler().schedule(Main.getInstance(), new Runnable() {
@@ -46,6 +48,14 @@ public class PostLogin implements Listener {
 							.replace("&", "§"));
 				}
 			}, 1, TimeUnit.SECONDS);
+		}
+		
+		if(UpdatesManager.isUpdate() && Config.getConfig().getInt("updater.staff-message.cooldown") >= 0){
+			ProxyServer.getInstance().getScheduler().schedule(Main.getInstance(), new Runnable() {
+				public void run() {
+					UpdatesManager.sendAlert(p);
+				}
+			}, Config.getConfig().getInt("updater.staff-message.cooldown"), TimeUnit.SECONDS);
 		}
 	}
 }

@@ -9,6 +9,7 @@ import fr.baba.deltamanager.events.PostLogin;
 import fr.baba.deltamanager.events.ServerKick;
 import fr.baba.deltamanager.events.ServerSwitch;
 import fr.baba.deltamanager.managers.MonitorManager;
+import fr.baba.deltamanager.managers.UpdatesManager;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
@@ -31,7 +32,7 @@ public class Main extends Plugin {
 		
 		//Channels
 		getProxy().registerChannel("delta:manager");
-		getProxy().registerChannel("delta:managerupdate");
+		//getProxy().registerChannel("delta:managerupdate");
 		
 		//Commands
 		pm.registerCommand(this, new DeltaManager("deltamanager"));
@@ -93,5 +94,12 @@ public class Main extends Plugin {
 				cs.sendMessage("PlayerDisconnect event started");
 			}
 		}
+		
+		UpdatesManager.check();
+	}
+	
+	@Override
+	public void onDisable(){
+		getProxy().unregisterChannel("delta:manager");
 	}
 }
