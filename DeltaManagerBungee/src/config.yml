@@ -9,6 +9,14 @@ date:
     plural: ['years', 'months', 'days', 'hours', 'minutes', 'seconds']
     singular: ['year', 'month', 'day', 'hour', 'minute', 'second']
 
+updater:
+  enabled: true
+  staff-message:
+    cooldown: 3 # seconds after connection to send the message, -1 to not send
+    message: '&2&l[&a&lDeltaManager&2&l]&4A new version of the plugin is available for download.'
+    reminder-versions: true
+    show-link: true
+
 logs:
   login:
     enabled: true
@@ -120,10 +128,97 @@ monitor:
         authoricon: 'https://deltamc.fr/storage/img/server.png'
         title: '**%server%** server is back online after **%duration%**'
 
-updater:
+chat:
   enabled: true
-  staff-message:
-    cooldown: 3 # seconds after connection to send the message, -1 to not send
-    message: '&2&l[&a&lDeltaManager&2&l]&4A new version of the plugin is available for download.'
-    reminder-versions: true
-    show-link: true
+  command-blacklist:
+    enabled: true
+    alert-message:
+      content: '&4&lDeltaChat &8» &f%player% &7send wrong &f%type% &7[&4%vl%&r vl&7]'
+      hoverMessage:
+      - '&7Player : &r%player%'
+      - '&7Message : &r%msg%'
+      - '&7Type : &r%type%'
+      - '&7Flag : &r%flag%'
+      - '&7VL : &r%vl%'
+    punishments:
+    # 0 is executed when punishments are not found
+      '0':
+      - cancel
+      - alert
+      - cmd=tempban %player% 5m You have executed too many blacklisted commands
+      '1':
+      - cancel
+      - alert
+      '2':
+      - cancel
+      - alert
+      - cmd=tempban %player% 5m You have executed too many blacklisted commands
+
+    # List of blacklisted commands using Rebex to catch wrong commands (The commands are all taken in lower case)
+    regex:
+    - '(calc|eval|solve).*?(for|while|ln)'
+    
+    startsWith:
+    # Bukkit exploits
+    - 'icanhasbukkit'
+    - 'me'
+    - 'about'
+    - 'pl'
+    - 'plugins'
+    - 'ver'
+    - 'version'
+    - 'bukkit:about'
+    - 'bukkit:pl'
+    - 'bukkit:plugins'
+    - 'bukkit:ver'
+    - 'bukkit:version'
+    - 'bukkit:help'
+    - 'bukkit:?'
+    # WorldEdit exploits
+    - 'info'
+    - '/calc'
+    - '/eval'
+    - '/evaluate'
+    - '/calculate'
+    - '/solve'
+    # PermissionsEx exploits
+    - 'pex'
+    - 'promote'
+    - 'demote'
+    - 'execute'
+    # Multiverse-Core exploits
+    - 'mv ^'
+    - 'mv help <'
+    - 'mvhelp <'
+    - '$'
+  message-blacklist:
+    enabled: false
+    alert-message:
+      content: '&4&lDeltaChat &8» &f%player% &7send wrong &f%type% &7[&4%vl%&r vl&7]'
+      hoverMessage:
+      - '&7Player : &r%player%'
+      - '&7Message : &r%msg%'
+      - '&7Type : &r%type%'
+      - '&7Flag : &r%flag%'
+      - '&7VL : &r%vl%'
+    take-messages-in-lower-case: false # Do not enabled if you want to catch messages in capital letters for example
+    replaced-messages:
+    - 'I have fun all the time on this server, I recommend it to everyone!'
+    - 'I feel so sad today, could someone please make me feel better?'
+    punishments:
+    # 0 is executed when punishments are not found
+      '0':
+      - replace
+      - alert
+      '1':
+      - replace
+      '2':
+      - replace
+      - alert
+    
+    # Find using Regex to catch wrong messages
+    blacklisted-messages:
+    - '[A-Z0-9]{3,}' # Find word with more than 3 letter in upper case
+    - fuck
+    - bitch
+    - pussy
