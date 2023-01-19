@@ -17,3 +17,15 @@ permissions:
 
   deltamanager.monitor.alerts:
     description: Receive servers monitoring alerts
+
+  deltamanager.chat.command-blacklist.alerts:
+    description: Receive chat command blacklist alerts
+
+  deltamanager.chat.message-blacklist.alerts:
+    description: Receive chat message blacklist alerts
+
+  deltamanager.chat.command-blacklist.bypass:
+    description: Bypass chat command blacklist
+
+  deltamanager.chat.message-blacklist.bypass:
+    description: Bypass chat message blacklist
