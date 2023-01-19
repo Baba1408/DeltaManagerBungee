@@ -22,6 +22,7 @@ import fr.baba.deltamanager.timers.Monitor;
 import fr.baba.deltamanager.utils.PlayerUtils;
 import fr.baba.deltamanager.utils.TimeUtils;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 
 public class MonitorManager {
@@ -114,7 +115,7 @@ public class MonitorManager {
 							webhook.execute();
 						} catch (IOException e) {
 							e.printStackTrace();
-							ProxyServer.getInstance().getConsole().sendMessage("[DeltaManagerBungee] Error when sending the Webhook");
+							ProxyServer.getInstance().getConsole().sendMessage(TextComponent.fromLegacyText("[DeltaManagerBungee] Error when sending the Webhook"));
 						}
 					});
 				}
@@ -128,51 +129,51 @@ public class MonitorManager {
 				error = true;
 			}
         	
-        	if(error){
-        		status.put(name, status.get(name) + 1);
-        		
-        		if(status.get(name) != Config.getConfig().getInt("monitor.detected-offline")) continue;
-        		dates.put(name, Instant.now());
-        		
-        		if(Config.getConfig().getBoolean("monitor.notify.offline.log.enabled")){
-        			System.out.println(Config.getConfig().getString("monitor.notify.offline.log.log")
-							.replace("%server%", name)
-							.replace("&", "§"));
-        		}
-        		
-        		PlayerUtils.broadcast(Config.getConfig().getString("monitor.notify.offline.staff-message")
+        	if(!error) return;
+        	
+        	status.put(name, status.get(name) + 1);
+    		
+    		if(status.get(name) != Config.getConfig().getInt("monitor.detected-offline")) continue;
+    		dates.put(name, Instant.now());
+    		
+    		if(Config.getConfig().getBoolean("monitor.notify.offline.log.enabled")){
+    			System.out.println(Config.getConfig().getString("monitor.notify.offline.log.log")
 						.replace("%server%", name)
-						.replace("&", "§"), "deltamanager.monitor.alerts");
-				
-				if(Config.getConfig().getBoolean("monitor.notify.offline.webhook.enabled")){
-					ProxyServer.getInstance().getScheduler().runAsync(main, () -> {
-						String path = "monitor.notify.offline.webhook.";
-						DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-						ZonedDateTime now = ZonedDateTime.now();
-						ZonedDateTime zone = now.withZoneSameInstant(ZoneId.of(Config.getConfig().getString("ZoneId")));
-						
-						Webhook webhook = new Webhook(Config.getConfig().getString(path + "url"));
-						
-						EmbedObject embed = new Webhook.EmbedObject();
-						embed.setAuthor(Config.getConfig().getString(path + "author")
-								.replace("%server%", name), "", Config.getConfig().getString(path + "authoricon")
+						.replace("&", "§"));
+    		}
+    		
+    		PlayerUtils.broadcast(Config.getConfig().getString("monitor.notify.offline.staff-message")
+					.replace("%server%", name)
+					.replace("&", "§"), "deltamanager.monitor.alerts");
+			
+			if(Config.getConfig().getBoolean("monitor.notify.offline.webhook.enabled")){
+				ProxyServer.getInstance().getScheduler().runAsync(main, () -> {
+					String path = "monitor.notify.offline.webhook.";
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+					ZonedDateTime now = ZonedDateTime.now();
+					ZonedDateTime zone = now.withZoneSameInstant(ZoneId.of(Config.getConfig().getString("ZoneId")));
+					
+					Webhook webhook = new Webhook(Config.getConfig().getString(path + "url"));
+					
+					EmbedObject embed = new Webhook.EmbedObject();
+					embed.setAuthor(Config.getConfig().getString(path + "author")
+							.replace("%server%", name), "", Config.getConfig().getString(path + "authoricon")
+							.replace("%server%", name))
+						.setTitle(Config.getConfig().getString(path + "title")
 								.replace("%server%", name))
-							.setTitle(Config.getConfig().getString(path + "title")
-									.replace("%server%", name))
-							.setColor(Color.red)
-							.setFooter(dtf.format(zone), "");
-						
-						webhook.addEmbed(embed);
-						
-						try {
-							webhook.execute();
-						} catch (IOException e) {
-							e.printStackTrace();
-							ProxyServer.getInstance().getConsole().sendMessage("[DeltaManagerBungee] Error when sending the Webhook");
-						}
-					});
-				}
-        	}
+						.setColor(Color.red)
+						.setFooter(dtf.format(zone), "");
+					
+					webhook.addEmbed(embed);
+					
+					try {
+						webhook.execute();
+					} catch (IOException e) {
+						e.printStackTrace();
+						ProxyServer.getInstance().getConsole().sendMessage(TextComponent.fromLegacyText("[DeltaManagerBungee] Error when sending the Webhook"));
+					}
+				});
+			}
 		}
 	}
 	
