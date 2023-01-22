@@ -1,5 +1,5 @@
 name: DeltaManager
-version: 1.0.4
+version: 1.0.5
 author: Baba
 main: fr.baba.deltamanager.Main
 
@@ -13,7 +13,7 @@ permissions:
   deltamanager.admin:
     description: All permissions for DeltaManger
     children:
-      deltamanager.monitor.alerts: true
+      deltamanager.*
 
   deltamanager.monitor.alerts:
     description: Receive servers monitoring alerts
