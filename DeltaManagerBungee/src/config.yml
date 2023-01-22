@@ -136,7 +136,7 @@ chat:
       content: '&4&lDeltaChat &8» &f%player% &7send wrong &f%type% &7[&4%vl%&r vl&7]'
       hoverMessage:
       - '&7Player : &r%player%'
-      - '&7Message : &r%msg%'
+      - '&7Command : &r%msg%'
       - '&7Type : &r%type%'
       - '&7Flag : &r%flag%'
       - '&7VL : &r%vl%'
@@ -144,19 +144,23 @@ chat:
     # 0 is executed when punishments are not found
       '0':
       - cancel
+      - msg=&cThis command is not allowed!
       - alert
       - cmd=tempban %player% 5m You have executed too many blacklisted commands
       '1':
       - cancel
+      - msg=&cThis command is not allowed!
       - alert
       '2':
       - cancel
+      - msg=&cThis command is not allowed! (2)
       - alert
       - cmd=tempban %player% 5m You have executed too many blacklisted commands
 
     # List of blacklisted commands using Rebex to catch wrong commands (The commands are all taken in lower case)
     regex:
     - '(calc|eval|solve).*?(for|while|ln)'
+    - '(bukkit:).*?(about|pl|ver|help|\?)'
     
     startsWith:
     # Bukkit exploits
@@ -167,20 +171,19 @@ chat:
     - 'plugins'
     - 'ver'
     - 'version'
-    - 'bukkit:about'
-    - 'bukkit:pl'
-    - 'bukkit:plugins'
-    - 'bukkit:ver'
-    - 'bukkit:version'
-    - 'bukkit:help'
-    - 'bukkit:?'
-    # WorldEdit exploits
-    - 'info'
-    - '/calc'
-    - '/eval'
-    - '/evaluate'
-    - '/calculate'
-    - '/solve'
+    #- 'bukkit:about'
+    #- 'bukkit:pl'
+    #- 'bukkit:plugins'
+    #- 'bukkit:ver'
+    #- 'bukkit:version'
+    #- 'bukkit:help'
+    #- 'bukkit:?'
+    # WorldEdit exploits (already in Regex)
+    #- '/calc'
+    #- '/eval'
+    #- '/evaluate'
+    #- '/calculate'
+    #- '/solve'
     # PermissionsEx exploits
     - 'pex'
     - 'promote'
@@ -201,7 +204,6 @@ chat:
       - '&7Type : &r%type%'
       - '&7Flag : &r%flag%'
       - '&7VL : &r%vl%'
-    take-messages-in-lower-case: false # Do not enabled if you want to catch messages in capital letters for example
     replaced-messages:
     - 'I have fun all the time on this server, I recommend it to everyone!'
     - 'I feel so sad today, could someone please make me feel better?'
@@ -218,7 +220,7 @@ chat:
     
     # Find using Regex to catch wrong messages
     blacklisted-messages:
-    - '[A-Z0-9]{3,}' # Find word with more than 3 letter in upper case
+    - '[A-Z0-9]{10,}' # Find word with more than 3 letter in upper case
     - fuck
     - bitch
     - pussy
