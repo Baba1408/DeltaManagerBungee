@@ -24,13 +24,10 @@ public class PlayerChat implements Listener {
 	static ArrayList<String> Cstartswith = new ArrayList<>();
 	static ArrayList<String> Cregex = new ArrayList<>();
 	static ArrayList<String> Mregex = new ArrayList<>();
-	static Boolean Mlowercase = false;
 	static Map<UUID, Map<String, Integer>> vl = new HashMap<>();
 	
 	public static void init() {
 		CommandSender cs = Main.getInstance().getProxy().getConsole();
-		
-		Mlowercase = Config.getConfig().getBoolean("chat.message-blacklist.take-messages-in-lower-case");
 		
 		Cstartswith.clear();
 		Cregex.clear();
@@ -80,19 +77,18 @@ public class PlayerChat implements Listener {
 			//System.out.println("(" + msg + ") length: " + msg.length());
 			
 			for(String b : Cregex){
-				Pattern pat = Pattern.compile(b);
+				Pattern pat = Pattern.compile(b, Pattern.CASE_INSENSITIVE);
 				Matcher m = pat.matcher(msg);
 				if(m.find()){
-					punish(p, "command-blacklist", "Regex: " + m.group(), e);
-					System.out.println("Le message est interdit.");
+					punish(p, "command-blacklist", "Regex: " + m.group() + " (" + b + ")", e);
 					return;
 				}
 			}
 			
+			String[] args = msg.split(" ");
 			for(String b : Cstartswith){
-				if(msg.startsWith(b) && !msg.startsWith(b + "z")){
+				if(args[0].equalsIgnoreCase(b) || (b.contains(" ") && msg.startsWith(b))){
 					punish(p, "command-blacklist", "startsWith: " + b, e);
-					System.out.println("Le message est interdit." + msg.length());
 					return;
 				}
 			}
@@ -101,13 +97,12 @@ public class PlayerChat implements Listener {
 		} else {
 			if(p.hasPermission("deltamanager.chat.message-blacklist.bypass")) return;
 			String msg = e.getMessage();
-			if(Mlowercase) msg = msg.toLowerCase();
 			
 			for(String b : Mregex){
-				Pattern pat = Pattern.compile(b);
+				Pattern pat = Pattern.compile(b, Pattern.CASE_INSENSITIVE);
 				Matcher m = pat.matcher(msg);
 				if(m.find()){
-					punish(p, "message-blacklist", "Regex: " + m.group(), e);
+					punish(p, "message-blacklist", "Regex: " + m.group() + " (" + b + ")", e);
 					System.out.println("Le message est interdit.");
 					return;
 				}
@@ -142,7 +137,12 @@ public class PlayerChat implements Listener {
 		int vl2 = vl.get(p.getUniqueId()).get(type2);
 		if(Config.getConfig().getStringList("chat." + type + ".punishments." + vl.get(p.getUniqueId())) == null || Config.getConfig().getStringList("chat." + type + ".punishments." + vl.get(p.getUniqueId())).isEmpty()){
 			vl2 = 0;
+			if(Config.getConfig().getStringList("chat." + type + ".punishments.0") == null || Config.getConfig().getStringList("chat." + type + ".punishments.0").isEmpty()){
+				e.setCancelled(true);
+			}
 		}
+		
+		
 		
 		for(String sanction : Config.getConfig().getStringList("chat." + type + ".punishments." + vl2)){
 			sanction = sanction
@@ -211,6 +211,10 @@ public class PlayerChat implements Listener {
 					case "cmd":
 						PluginManager pm = BungeeCord.getInstance().getPluginManager();
 			    		pm.dispatchCommand(BungeeCord.getInstance().getConsole(), args[1]);
+						break;
+					
+					case "msg":
+						p.sendMessage(TextComponent.fromLegacyText(args[1]));
 						break;
 					
 					default:
