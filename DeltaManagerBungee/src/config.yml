@@ -75,13 +75,44 @@ save-connexion:
   - '&ePlease try again later'
   - ''
   - '&7&m---------------------------------------------'
-
-
+ 
+  # ! NEW !
+  reconnect:
+    enabled: true
+    require-permission: false # permission: deltamanager.reconnect
+    logs: true
+    timeout: 180
+    period: 10 # The 1st try (ping) will be only at 20 seconds, otherwise the server could answer when it should not
+    
+    servers-list:
+      type: 'blacklist' # Types available : none, blacklist, whitelist
+      list:
+      - survival
+    
+    messages:
+      chat:
+        added: '&aYou have been added to the queue to join the server you were on, click on this message to leave the queue.'
+        removed: '&6You have been removed from the queue.'
+        
+        enabled: false # Even if you enable this, if you leave a message blank or deleted, it will not be displayed (does not concern "added" and "removed" message)
+        
+        available: '&5&l[&d&lReconnect&5&l]&a Server available, connection in a few seconds...'
+        unavailable: '&5&l[&d&lReconnect&5&l]&c Server unreachable (queued for %server%)...'
+        success: '&5&l[&d&lReconnect&5&l]&a Connecting to the server...'
+        timeout: '&5&l[&d&lReconnect&5&l]&c Server inaccessible for more than %seconds% seconds, canceled queue.'
+      action-bar:
+        enabled: true # Even if you enable this, if you leave a message blank or deleted, it will not be displayed
+        
+        available: '&2✔&a Server available, connection in %timeout% seconds...'
+        unavailable: '&4✘&c Server unreachable (queued for %server%)...'
+        success: '&2✔&a Connecting to the server...'
+        timeout: '&4✘&c Server inaccessible for more than %seconds% seconds, canceled queue.'
+    
 monitor:
   enabled: true
   interval: 120 #seconds
   
-  #The server must be detected x times offline before being notified (to avoid simple restarts)
+  # The server must be detected x times offline before being notified (to avoid simple restarts)
   detected-offline: 2
   
   # If this option is enabled, server-list does not need to be completed
@@ -94,7 +125,7 @@ monitor:
   - bedwars
   
   notify:
-    #permission: deltamanager.monitor.alerts
+    # permission: deltamanager.monitor.alerts
     
     show-seconds: false
     no-seconds: 'less than one minute'
@@ -133,8 +164,8 @@ chat:
   command-blacklist:
     enabled: true
     alert-message:
-      content: '&4&lDeltaChat &8» &f%player% &7send wrong &f%type% &7[&4%vl%&r vl&7]'
-      hoverMessage:
+      content: '&4&lDeltaShield &8» &f%player% &7send wrong &f%type% &7[&4%vl%&r vl&7]'
+      hover-message:
       - '&7Player : &r%player%'
       - '&7Command : &r%msg%'
       - '&7Type : &r%type%'
@@ -147,6 +178,7 @@ chat:
       - msg=&cThis command is not allowed!
       - alert
       - cmd=tempban %player% 5m You have executed too many blacklisted commands
+      - resetvl
       '1':
       - cancel
       - msg=&cThis command is not allowed!
@@ -160,7 +192,7 @@ chat:
     # List of blacklisted commands using Rebex to catch wrong commands (The commands are all taken in lower case)
     regex:
     - '(calc|eval|solve).*?(for|while|ln)'
-    - '(bukkit:).*?(about|pl|ver|help|\?)'
+    - '(bukkit:)(about|pl|ver|help|\?)'
     
     startsWith:
     # Bukkit exploits
@@ -195,10 +227,10 @@ chat:
     - 'mvhelp <'
     - '$'
   message-blacklist:
-    enabled: false
+    enabled: true
     alert-message:
-      content: '&4&lDeltaChat &8» &f%player% &7send wrong &f%type% &7[&4%vl%&r vl&7]'
-      hoverMessage:
+      content: '&4&lDeltaShield &8» &f%player% &7send wrong &f%type% &7[&4%vl%&r vl&7]'
+      hover-message:
       - '&7Player : &r%player%'
       - '&7Message : &r%msg%'
       - '&7Type : &r%type%'
@@ -210,13 +242,13 @@ chat:
     punishments:
     # 0 is executed when punishments are not found
       '0':
-      - replace
       - alert
+      - replace
       '1':
       - replace
       '2':
-      - replace
       - alert
+      - replace
     
     # Find using Regex to catch wrong messages
     blacklisted-messages:
@@ -224,3 +256,18 @@ chat:
     - fuck
     - bitch
     - pussy
+
+domain-redirection:
+  enabled: false
+  # types: random, availability-order, [later on : more-people, less-people]
+  message: '' # Leave empty and remove to disable
+  error: '&cThe server you were trying to connect to is unavailable, please try again later.'
+  domains:
+    lobby_deltamc_fr:
+      enabled: true
+      type: availability-order
+      queue: -1 # -1 to disable otherwise put the place of the server on which you wanted to put the players in the queue
+      # Example : 0 to put the 1st server in the list
+      servers:
+      - lobby
+

@@ -8,6 +8,8 @@ commands:
     description: DeltaManager
     permission: deltamanager.admin
     aliases: [dm]
+  serverqueue:
+    description: DeltaManager - save-connexion.reconnect Module
 
 permissions:
   deltamanager.admin:
@@ -17,6 +19,9 @@ permissions:
 
   deltamanager.monitor.alerts:
     description: Receive servers monitoring alerts
+
+  deltamanager.reconnect:
+    description: Order to be queued in case of a server outage
 
   deltamanager.chat.command-blacklist.alerts:
     description: Receive chat command blacklist alerts
