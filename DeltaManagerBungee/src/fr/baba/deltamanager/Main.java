@@ -3,12 +3,14 @@ package fr.baba.deltamanager;
 import java.util.ArrayList;
 
 import fr.baba.deltamanager.commands.DeltaManager;
+import fr.baba.deltamanager.commands.ServerQueue;
 import fr.baba.deltamanager.events.PlayerChat;
 import fr.baba.deltamanager.events.PlayerDisconnect;
 import fr.baba.deltamanager.events.PlayerLogin;
 import fr.baba.deltamanager.events.PostLogin;
 import fr.baba.deltamanager.events.ServerKick;
 import fr.baba.deltamanager.events.ServerSwitch;
+import fr.baba.deltamanager.managers.ModulesManager;
 import fr.baba.deltamanager.managers.MonitorManager;
 import fr.baba.deltamanager.managers.UpdatesManager;
 import net.md_5.bungee.api.CommandSender;
@@ -18,8 +20,8 @@ import net.md_5.bungee.api.plugin.PluginManager;
 
 public class Main extends Plugin {
 	private static Main instance;
-	static String prefix = "[DeltaBungeeManager]";
-	static Boolean isStarting = true;
+	public static String prefix = "[DeltaManagerBungee]";
+	public static Boolean isStarting = true;
 	
 	static ArrayList<String> events = new ArrayList<>();
 	
@@ -40,6 +42,9 @@ public class Main extends Plugin {
 		//Commands
 		pm.registerCommand(this, new DeltaManager("deltamanager"));
 		pm.registerCommand(this, new DeltaManager("dm"));
+		pm.registerCommand(this, new ServerQueue("serverqueue"));
+		
+		ModulesManager.init();
 		
 		load();
 		UpdatesManager.check();
@@ -58,11 +63,19 @@ public class Main extends Plugin {
 		cs.sendMessage(TextComponent.fromLegacyText(prefix + " The configuration has been successfully reloaded!"));
 	}
 	
+	@SuppressWarnings("unused")
 	public static void load(){
 		PluginManager pm = instance.getProxy().getPluginManager();
 		CommandSender cs = instance.getProxy().getConsole();
 		
+		if(isStarting){
+			cs.sendMessage(TextComponent.fromLegacyText("§2[DeltaManagerBungee]§a Loading..."));
+		} else cs.sendMessage(TextComponent.fromLegacyText("§2[DeltaManagerBungee]§a Reloading..."));
+		
+		ModulesManager.reload();
+		
 		//Events
+		if(false){ //old code soon it will be removed
 		if(Config.getConfig().getBoolean("save-connexion.enabled") && !events.contains("ServerKick")){
 			pm.registerListener(instance, new ServerKick());
 			events.add("ServerKick");
@@ -96,7 +109,7 @@ public class Main extends Plugin {
 				events.add("PostLogin");
 				cs.sendMessage(TextComponent.fromLegacyText("PlayerDisconnect event started"));
 			}
-		} else if(!isStarting && !Config.getConfig().getBoolean("monitor.enabled") &&events.contains("PostLogin")) cs.sendMessage(TextComponent.fromLegacyText("§cTo completely disable the \"Monitor\" module you will need to restart the server"));
+		} else if(!Config.getConfig().getBoolean("monitor.enabled") && events.contains("PostLogin")) cs.sendMessage(TextComponent.fromLegacyText("§cTo completely disable the \"Monitor\" module you will need to restart the server"));
 		
 		if(Config.getConfig().getBoolean("chat.enabled")){
 			PlayerChat.init();
@@ -106,9 +119,10 @@ public class Main extends Plugin {
 				events.add("PlayerChat");
 				cs.sendMessage(TextComponent.fromLegacyText("PlayerChat event started"));
 			}
-		} else if(!isStarting && events.contains("PlayerChat")){
+		} else if(events.contains("PlayerChat")){
 			PlayerChat.clear();
 			cs.sendMessage(TextComponent.fromLegacyText("§cTo completely disable the \"Chat\" module you will need to restart the server"));
+		}
 		}
 	}
 	

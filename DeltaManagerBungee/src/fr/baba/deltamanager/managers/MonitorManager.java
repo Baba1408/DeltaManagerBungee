@@ -30,7 +30,9 @@ public class MonitorManager {
 	static Map<String, Integer> status = new HashMap<>();
 	static Map<String, Instant> dates = new HashMap<>();
 	
+	@SuppressWarnings("deprecation")
 	public static void init(){
+		System.out.println("");
 		if(Config.getConfig().getInt("monitor.interval") <= 1){
 			System.out.println("monitor.interval must be greater than 1 second");
 		}
@@ -54,6 +56,10 @@ public class MonitorManager {
 		if(Config.getConfig().getBoolean("debug")) System.out.println(status.keySet());
 		
 		Monitor.trystart();
+	}
+	
+	public static void clear(){
+		Monitor.cancel();
 	}
 	
 	@SuppressWarnings("deprecation")

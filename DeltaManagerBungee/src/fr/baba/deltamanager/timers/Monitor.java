@@ -10,27 +10,25 @@ import net.md_5.bungee.api.scheduler.ScheduledTask;
 
 public class Monitor {
 	private static ScheduledTask task;
-	private static int delay = 0;
+	public static int delay = 120;
 	
 	public static void trystart() {
 		if(Config.getConfig().getInt("monitor.interval") != delay){
-			System.out.println("Changing interval from " + delay + " seconds to " + Config.getConfig().getInt("monitor.interval") + " seconds");
+			if(!Main.isStarting) System.out.println("Changing interval from " + delay + " seconds to " + Config.getConfig().getInt("monitor.interval") + " seconds");
 			delay = Config.getConfig().getInt("monitor.interval");
-			cancelTask();
+			cancel();
 			start();
 		}
 	}
 	
 	public static void start() {
-		Main main = Main.getInstance();
-		
-		task = ProxyServer.getInstance().getScheduler().schedule(main, () -> {
-			if(Config.getConfig().getBoolean("debug")) System.out.println("Refresh...");
+		task = ProxyServer.getInstance().getScheduler().schedule(Main.getInstance(), () -> {
+			//if(Config.getConfig().getBoolean("debug")) System.out.println("Refresh...");
 			MonitorManager.refresh();
 		}, delay, delay, TimeUnit.SECONDS);
 	}
 	
-	public static void cancelTask() {
+	public static void cancel() {
 		if(task != null){
 			task.cancel();
 			task = null;
