@@ -63,13 +63,13 @@ public class ReconnectManager {
 		
 		if(logs) Main.getInstance().getLogger().log(Level.INFO, "[Reconnect] queued " + p.getName() + " to " + srv.getName());
 		
-		if(queue.get(srv) != null){
+		if(queue.get(srv) == null){
+			queue.put(srv, new ArrayList<>(Arrays.asList(p.getUniqueId())));
+			startTimer(srv);
+		} else {
 			ArrayList<UUID> list = queue.get(srv);
 			list.add(p.getUniqueId());
 			queue.put(srv, list);
-		} else {
-			queue.put(srv, new ArrayList<>(Arrays.asList(p.getUniqueId())));
-			startTimer(srv);
 		}
 		
 		players.put(p.getUniqueId(), srv);
