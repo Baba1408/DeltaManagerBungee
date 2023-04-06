@@ -11,6 +11,7 @@ import fr.baba.deltamanager.Main;
 import fr.baba.deltamanager.Webhook;
 import fr.baba.deltamanager.Webhook.EmbedObject;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -25,9 +26,9 @@ public class PlayerLogin implements Listener {
 		PendingConnection p = e.getConnection();
 		
 		if(Config.getConfig().getBoolean("logs.login.enabled")){
-			ProxyServer.getInstance().getConsole().sendMessage(Config.getConfig().getString("logs.login.message")
+			ProxyServer.getInstance().getConsole().sendMessage(TextComponent.fromLegacyText(Config.getConfig().getString("logs.login.message")
 					.replace("%player%", p.getName())
-					.replace("&", "§"));
+					.replace("&", "§")));
 		}
 		
 		if(Config.getConfig().getBoolean("webhook.login.enabled")){
@@ -53,7 +54,7 @@ public class PlayerLogin implements Listener {
 					webhook.execute();
 				} catch (IOException e1) {
 					e1.printStackTrace();
-					ProxyServer.getInstance().getConsole().sendMessage("[DeltaManagerBungee] Error when sending the Webhook");
+					ProxyServer.getInstance().getConsole().sendMessage(TextComponent.fromLegacyText("[DeltaManagerBungee] Error when sending the Webhook"));
 				}
 			});
 		}
