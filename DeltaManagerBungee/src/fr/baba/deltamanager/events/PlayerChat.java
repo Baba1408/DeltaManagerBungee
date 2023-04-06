@@ -32,28 +32,36 @@ public class PlayerChat implements Listener {
 		Cstartswith.clear();
 		Cregex.clear();
 		if(Config.getConfig().getBoolean("chat.command-blacklist.enabled")){
-			cs.sendMessage(TextComponent.fromLegacyText("ง2งl[Chat Module]งa Loading blacklisted commands..."));
+			cs.sendMessage(TextComponent.fromLegacyText("ยง2[Chat Module]ยงa Loading blacklisted commands..."));
+			
 			if(Config.getConfig().getStringList("chat.command-blacklist.startsWith") != null && !Config.getConfig().getStringList("chat.command-blacklist.startsWith").isEmpty()){
 				for(String b : Config.getConfig().getStringList("chat.command-blacklist.startsWith")){
 					Cstartswith.add(b);
 				}
-			} else cs.sendMessage(TextComponent.fromLegacyText("ง4งl[Chat Module]งc command-blacklist > startsWith : has not been loaded because it does not exist in the configuration file or is empty"));
+				
+				cs.sendMessage(TextComponent.fromLegacyText("	ยง2โ”ยงa command-blacklist > startsWith"));
+			} else cs.sendMessage(TextComponent.fromLegacyText("ยง4[Chat Module]ยงc command-blacklist > startsWith : has not been loaded because it does not exist in the configuration file or is empty"));
 			
 			if(Config.getConfig().getStringList("chat.command-blacklist.regex") != null && !Config.getConfig().getStringList("chat.command-blacklist.regex").isEmpty()){
 				for(String b : Config.getConfig().getStringList("chat.command-blacklist.regex")){
 					Cregex.add("\\b" + b + "\\b");
 				}
-			} else cs.sendMessage(TextComponent.fromLegacyText("ง4งl[Chat Module]งc command-blacklist > regex : has not been loaded because it does not exist in the configuration file or is empty"));
+
+				cs.sendMessage(TextComponent.fromLegacyText("	ยง2โ”ยงa command-blacklist > regex"));
+			} else cs.sendMessage(TextComponent.fromLegacyText("ยง4[Chat Module]ยงc command-blacklist > regex : has not been loaded because it does not exist in the configuration file or is empty"));
 		}
 		
 		Mregex.clear();
 		if(Config.getConfig().getBoolean("chat.message-blacklist.enabled")){
-			cs.sendMessage(TextComponent.fromLegacyText("ง2งl[Chat Module]งa Loading blacklisted message..."));
+			cs.sendMessage(TextComponent.fromLegacyText("ยง2[Chat Module]ยงa Loading blacklisted message..."));
+			
 			if(Config.getConfig().getStringList("chat.message-blacklist.blacklisted-messages") != null && !Config.getConfig().getStringList("chat.message-blacklist.blacklisted-messages").isEmpty()){
 				for(String b : Config.getConfig().getStringList("chat.message-blacklist.blacklisted-messages")){
 					Mregex.add("\\b" + b + "\\b");
 				}
-			} else cs.sendMessage(TextComponent.fromLegacyText("ง4งl[Chat Module]งc message-blacklist > blacklisted-messages : has not been loaded because it does not exist in the configuration file or is empty"));
+				
+				cs.sendMessage(TextComponent.fromLegacyText("	ยง2โ”ยงa message-blacklist > regex"));
+			} else cs.sendMessage(TextComponent.fromLegacyText("ยง4[Chat Module]ยงc message-blacklist > blacklisted-messages : has not been loaded because it does not exist in the configuration file or is empty"));
 		}
 	}
 	
@@ -62,7 +70,7 @@ public class PlayerChat implements Listener {
 		Cregex.clear();
 		Mregex.clear();
 		
-		Main.getInstance().getProxy().getConsole().sendMessage(TextComponent.fromLegacyText("ง4งl[Chat Module]งc Module disabled..."));
+		Main.getInstance().getProxy().getConsole().sendMessage(TextComponent.fromLegacyText("ยง4ยงl[Chat Module]ยงc Module disabled..."));
 	}
 
 	@EventHandler
@@ -142,11 +150,9 @@ public class PlayerChat implements Listener {
 			}
 		}
 		
-		
-		
 		for(String sanction : Config.getConfig().getStringList("chat." + type + ".punishments." + vl2)){
 			sanction = sanction
-					.replace("&", "ง")
+					.replace("&", "ยง")
 					.replace("%player%", p.getName())
 					.replace("%msg%", e.getMessage())
 					.replace("%type%", type2)
@@ -159,19 +165,19 @@ public class PlayerChat implements Listener {
 				break;
 			case "alert":
 				TextComponent alert = new TextComponent(Config.getConfig().getString("chat." + type + ".alert-message.content")
-						.replace("&", "ง")
+						.replace("&", "ยง")
 						.replace("%player%", p.getName())
 						.replace("%msg%", e.getMessage())
 						.replace("%type%", type2)
 						.replace("%flag%", flag)
 						.replace("%vl%", vl.get(id).get(type2).toString()));
 				StringBuilder builder = new StringBuilder();
-				final int size = Config.getConfig().getStringList("chat." + type + ".alert-message.hoverMessage").size();
+				final int size = Config.getConfig().getStringList("chat." + type + ".alert-message.hover-message").size();
 				int i = 1;
-				for(final String hover : Config.getConfig().getStringList("chat." + type + ".alert-message.hoverMessage")) {
+				for(final String hover : Config.getConfig().getStringList("chat." + type + ".alert-message.hover-message")) {
 					if(i == size){
 						builder.append(hover
-								.replace("&", "ง")
+								.replace("&", "ยง")
 								.replace("%player%", p.getName())
 								.replace("%msg%", e.getMessage())
 								.replace("%type%", type2)
@@ -179,7 +185,7 @@ public class PlayerChat implements Listener {
 								.replace("%vl%", vl.get(id).get(type2).toString()));
 					} else {
 						builder.append(hover
-								.replace("&", "ง")
+								.replace("&", "ยง")
 								.replace("%player%", p.getName())
 								.replace("%msg%", e.getMessage())
 								.replace("%type%", type2)
@@ -202,6 +208,12 @@ public class PlayerChat implements Listener {
 				int y = (int)(Math.random() * Config.getConfig().getStringList("chat.message-blacklist.replaced-messages").size());
 				e.setMessage(Config.getConfig().getStringList("chat.message-blacklist.replaced-messages").get(y));
 				break;
+			case "resetvl":
+				Map<String, Integer> x2 = new HashMap<>();
+				x2.remove(type2);
+				vl.put(id, x2);
+				break;
+				
 			default:
 				if(sanction.contains("=")){
 					String[] args = sanction.split("=");
@@ -220,7 +232,7 @@ public class PlayerChat implements Listener {
 					default:
 						break;
 					}
-				}
+				} else System.out.println("[DeltaManager > Chat] Action not found (" + sanction + ")");
 				
 				break;
 			}
