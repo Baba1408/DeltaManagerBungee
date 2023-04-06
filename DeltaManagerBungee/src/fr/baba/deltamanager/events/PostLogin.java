@@ -10,6 +10,7 @@ import fr.baba.deltamanager.managers.MonitorManager;
 import fr.baba.deltamanager.managers.UpdatesManager;
 import fr.baba.deltamanager.utils.TimeUtils;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -17,7 +18,6 @@ import net.md_5.bungee.event.EventHandler;
 
 public class PostLogin implements Listener {
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPostLogin(PostLoginEvent e){
 		ProxiedPlayer p = e.getPlayer();
@@ -43,9 +43,9 @@ public class PostLogin implements Listener {
 						}
 					}
 					
-					p.sendMessage(msg
+					p.sendMessage(TextComponent.fromLegacyText(msg
 							.replace("%servers%", servers)
-							.replace("&", "§"));
+							.replace("&", "§")));
 				}
 			}, 1, TimeUnit.SECONDS);
 		}
