@@ -40,7 +40,6 @@ public class ServerConnect implements Listener {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void serverConnect(ServerConnectEvent e){
 		ProxiedPlayer p = e.getPlayer();
