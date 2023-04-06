@@ -30,7 +30,6 @@ public class MonitorManager {
 	static Map<String, Integer> status = new HashMap<>();
 	static Map<String, Instant> dates = new HashMap<>();
 	
-	@SuppressWarnings("deprecation")
 	public static void init(){
 		System.out.println("");
 		if(Config.getConfig().getInt("monitor.interval") <= 1){
