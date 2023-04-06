@@ -11,7 +11,9 @@ import fr.baba.deltamanager.Config;
 import fr.baba.deltamanager.Main;
 import fr.baba.deltamanager.Webhook;
 import fr.baba.deltamanager.Webhook.EmbedObject;
+import fr.baba.deltamanager.managers.ReconnectManager;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -20,7 +22,6 @@ import net.md_5.bungee.event.EventHandler;
 public class PlayerDisconnect implements Listener {
 	private Main main = Main.getInstance();
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void disconnect(PlayerDisconnectEvent e){
 		ProxiedPlayer p = e.getPlayer();
@@ -31,10 +32,10 @@ public class PlayerDisconnect implements Listener {
 		} else lsrv = p.getServer().getInfo().getName();
 		
 		if(Config.getConfig().getBoolean("logs.disconnect.enabled")){
-			ProxyServer.getInstance().getConsole().sendMessage(Config.getConfig().getString("logs.disconnect.message")
+			ProxyServer.getInstance().getConsole().sendMessage(TextComponent.fromLegacyText(Config.getConfig().getString("logs.disconnect.message")
 					.replace("%player%", p.getName())
 					.replace("%server%", lsrv)
-					.replace("&", "§"));
+					.replace("&", "§")));
 		}
 		
 		if(Config.getConfig().getBoolean("webhook.disconnect.enabled")){
@@ -59,10 +60,12 @@ public class PlayerDisconnect implements Listener {
 					webhook.execute();
 				} catch (IOException e1) {
 					e1.printStackTrace();
-					ProxyServer.getInstance().getConsole().sendMessage("[DeltaManagerBungee] Error when sending the Webhook");
+					ProxyServer.getInstance().getConsole().sendMessage(TextComponent.fromLegacyText("[DeltaManagerBungee] Error when sending the Webhook"));
 				}
 			});
 		}
+		
+		ReconnectManager.removePlayer(p, false);
 		
 		if(ProxyServer.getInstance().getPlayers().size() > 1) return;
 		
@@ -72,10 +75,10 @@ public class PlayerDisconnect implements Listener {
 			} else if(ProxyServer.getInstance().getPlayers().size() > 0) return;
 			
 			if(Config.getConfig().getBoolean("logs.nomoreplayers.enabled")){
-				ProxyServer.getInstance().getConsole().sendMessage(Config.getConfig().getString("logs.nomoreplayers.message")
+				ProxyServer.getInstance().getConsole().sendMessage(TextComponent.fromLegacyText(Config.getConfig().getString("logs.nomoreplayers.message")
 						.replace("%player%", p.getName())
 						.replace("%server%", lsrv)
-						.replace("&", "§"));
+						.replace("&", "§")));
 			}
 			
 			if(Config.getConfig().getBoolean("webhook.nomoreplayers.enabled")){
@@ -86,7 +89,7 @@ public class PlayerDisconnect implements Listener {
 					webhook.execute();
 				} catch (IOException e1) {
 					e1.printStackTrace();
-					ProxyServer.getInstance().getConsole().sendMessage("[DeltaManagerBungee] Error while sending the Webhook " + e.toString());
+					ProxyServer.getInstance().getConsole().sendMessage(TextComponent.fromLegacyText("[DeltaManagerBungee] Error while sending the Webhook " + e.toString()));
 				}
 			}
 		}, 2, TimeUnit.SECONDS);

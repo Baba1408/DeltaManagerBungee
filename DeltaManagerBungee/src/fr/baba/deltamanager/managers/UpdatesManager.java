@@ -10,6 +10,7 @@ import javax.net.ssl.HttpsURLConnection;
 import fr.baba.deltamanager.Config;
 import fr.baba.deltamanager.Main;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class UpdatesManager {
@@ -57,12 +58,11 @@ public class UpdatesManager {
 		return newversion != null;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static void sendAlert(ProxiedPlayer p) {
 		if(newversion != null){
-			p.sendMessage(prefix + "A new version of the plugin is available and can be downloaded");
-			if(Config.getConfig().getBoolean("updater.staff-message.reminder-versions")) p.sendMessage("§bCurrent version : §6" + main.getDescription().getVersion() + "§3 / §bAvailable version : §6" + newversion);
-			if(Config.getConfig().getBoolean("updater.staff-message.show-link")) p.sendMessage("§6§lLink : §ehttps://www.spigotmc.org/resources/106116");
+			p.sendMessage(TextComponent.fromLegacyText(prefix + "A new version of the plugin is available and can be downloaded"));
+			if(Config.getConfig().getBoolean("updater.staff-message.reminder-versions")) p.sendMessage(TextComponent.fromLegacyText("§bCurrent version : §6" + main.getDescription().getVersion() + "§3 / §bAvailable version : §6" + newversion));
+			if(Config.getConfig().getBoolean("updater.staff-message.show-link")) p.sendMessage(TextComponent.fromLegacyText("§6§lLink : §ehttps://www.spigotmc.org/resources/106116"));
 		}
 	}
 }

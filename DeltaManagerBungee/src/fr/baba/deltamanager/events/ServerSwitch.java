@@ -11,6 +11,7 @@ import fr.baba.deltamanager.Main;
 import fr.baba.deltamanager.Webhook;
 import fr.baba.deltamanager.Webhook.EmbedObject;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ServerSwitchEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -19,18 +20,17 @@ import net.md_5.bungee.event.EventHandler;
 public class ServerSwitch implements Listener {
 	private Main main = Main.getInstance();
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void serverswitch(ServerSwitchEvent e){
 		if(e.getFrom() == null) return;
 		ProxiedPlayer p = e.getPlayer();
 		
 		if(Config.getConfig().getBoolean("logs.switch.enabled")){
-			ProxyServer.getInstance().getConsole().sendMessage(Config.getConfig().getString("logs.switch.message")
+			ProxyServer.getInstance().getConsole().sendMessage(TextComponent.fromLegacyText(Config.getConfig().getString("logs.switch.message")
 					.replace("%player%", p.getName())
 					.replace("%from%", e.getFrom().getName())
 					.replace("%to%", p.getServer().getInfo().getName())
-					.replace("&", "§"));
+					.replace("&", "§")));
 		}
 		
 		if(Config.getConfig().getBoolean("webhook.switch.enabled")){
@@ -56,7 +56,7 @@ public class ServerSwitch implements Listener {
 					webhook.execute();
 				} catch (IOException e1) {
 					e1.printStackTrace();
-					ProxyServer.getInstance().getConsole().sendMessage("[DeltaManagerBungee] Error when sending the Webhook");
+					ProxyServer.getInstance().getConsole().sendMessage(TextComponent.fromLegacyText("[DeltaManagerBungee] Error when sending the Webhook"));
 				}
 			});
 		}
