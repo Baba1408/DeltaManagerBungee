@@ -77,7 +77,7 @@ public class ReconnectManager {
 		TextComponent msg = new TextComponent(Config.getConfig().getString("save-connexion.reconnect.messages.chat.added")
 				.replace("%server%", srv.getName())
 				.replace("&", "§"));
-		msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "serverqueue quit"));
+		msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/serverqueue quit"));
 		p.sendMessage(msg);
 	}
 	
@@ -90,11 +90,8 @@ public class ReconnectManager {
 		players.remove(p.getUniqueId());
 		if(list.isEmpty()){
 			stopTimer(srv);
-			return;
-		}
-		
-		queue.put(srv, list);
-		if(msg && p.isConnected()) p.sendMessage(TextComponent.fromLegacyText(Config.getConfig().getString("save-connexion.reconnect.messages.removed")));
+		} else queue.put(srv, list);
+		if(msg) p.sendMessage(TextComponent.fromLegacyText(Config.getConfig().getString("save-connexion.reconnect.messages.chat.removed").replace("&", "§")));
 	}
 	
 	public static boolean containsPlayer(ProxiedPlayer p){
