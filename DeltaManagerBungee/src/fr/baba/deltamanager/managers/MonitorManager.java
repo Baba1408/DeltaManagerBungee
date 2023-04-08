@@ -16,11 +16,11 @@ import java.util.Map;
 
 import fr.baba.deltamanager.Config;
 import fr.baba.deltamanager.Main;
-import fr.baba.deltamanager.Webhook;
-import fr.baba.deltamanager.Webhook.EmbedObject;
 import fr.baba.deltamanager.timers.Monitor;
 import fr.baba.deltamanager.utils.PlayerUtils;
 import fr.baba.deltamanager.utils.TimeUtils;
+import fr.baba.deltamanager.utils.Webhook;
+import fr.baba.deltamanager.utils.Webhook.EmbedObject;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;

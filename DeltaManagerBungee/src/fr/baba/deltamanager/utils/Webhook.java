@@ -1,4 +1,5 @@
-package fr.baba.deltamanager;
+package fr.baba.deltamanager.utils;
+
 import javax.net.ssl.HttpsURLConnection;
 import java.awt.Color;
 import java.io.IOException;

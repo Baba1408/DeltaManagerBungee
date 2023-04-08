@@ -14,6 +14,7 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -35,18 +36,12 @@ public class PlayerChat implements Listener {
 			cs.sendMessage(TextComponent.fromLegacyText("§2[Chat Module]§a Loading blacklisted commands..."));
 			
 			if(Config.getConfig().getStringList("chat.command-blacklist.startsWith") != null && !Config.getConfig().getStringList("chat.command-blacklist.startsWith").isEmpty()){
-				for(String b : Config.getConfig().getStringList("chat.command-blacklist.startsWith")){
-					Cstartswith.add(b);
-				}
-				
+				for(String b : Config.getConfig().getStringList("chat.command-blacklist.startsWith")) Cstartswith.add(b);
 				cs.sendMessage(TextComponent.fromLegacyText("	§2✔§a command-blacklist > startsWith"));
 			} else cs.sendMessage(TextComponent.fromLegacyText("§4[Chat Module]§c command-blacklist > startsWith : has not been loaded because it does not exist in the configuration file or is empty"));
 			
 			if(Config.getConfig().getStringList("chat.command-blacklist.regex") != null && !Config.getConfig().getStringList("chat.command-blacklist.regex").isEmpty()){
-				for(String b : Config.getConfig().getStringList("chat.command-blacklist.regex")){
-					Cregex.add("\\b" + b + "\\b");
-				}
-
+				for(String b : Config.getConfig().getStringList("chat.command-blacklist.regex")) Cregex.add("\\b" + b + "\\b");
 				cs.sendMessage(TextComponent.fromLegacyText("	§2✔§a command-blacklist > regex"));
 			} else cs.sendMessage(TextComponent.fromLegacyText("§4[Chat Module]§c command-blacklist > regex : has not been loaded because it does not exist in the configuration file or is empty"));
 		}
@@ -56,10 +51,7 @@ public class PlayerChat implements Listener {
 			cs.sendMessage(TextComponent.fromLegacyText("§2[Chat Module]§a Loading blacklisted message..."));
 			
 			if(Config.getConfig().getStringList("chat.message-blacklist.blacklisted-messages") != null && !Config.getConfig().getStringList("chat.message-blacklist.blacklisted-messages").isEmpty()){
-				for(String b : Config.getConfig().getStringList("chat.message-blacklist.blacklisted-messages")){
-					Mregex.add("\\b" + b + "\\b");
-				}
-				
+				for(String b : Config.getConfig().getStringList("chat.message-blacklist.blacklisted-messages")) Mregex.add("\\b" + b + "\\b");
 				cs.sendMessage(TextComponent.fromLegacyText("	§2✔§a message-blacklist > regex"));
 			} else cs.sendMessage(TextComponent.fromLegacyText("§4[Chat Module]§c message-blacklist > blacklisted-messages : has not been loaded because it does not exist in the configuration file or is empty"));
 		}
@@ -119,7 +111,6 @@ public class PlayerChat implements Listener {
 	}
 	
 	//chat.*type*.+punishments
-	@SuppressWarnings("deprecation")
 	public static void punish(ProxiedPlayer p, String type, String flag, ChatEvent e) {
 		UUID id = p.getUniqueId();
 		
@@ -145,19 +136,17 @@ public class PlayerChat implements Listener {
 		int vl2 = vl.get(p.getUniqueId()).get(type2);
 		if(Config.getConfig().getStringList("chat." + type + ".punishments." + vl.get(p.getUniqueId())) == null || Config.getConfig().getStringList("chat." + type + ".punishments." + vl.get(p.getUniqueId())).isEmpty()){
 			vl2 = 0;
-			if(Config.getConfig().getStringList("chat." + type + ".punishments.0") == null || Config.getConfig().getStringList("chat." + type + ".punishments.0").isEmpty()){
-				e.setCancelled(true);
-			}
+			if(Config.getConfig().getStringList("chat." + type + ".punishments.0") == null || Config.getConfig().getStringList("chat." + type + ".punishments.0").isEmpty()) e.setCancelled(true);
 		}
 		
 		for(String sanction : Config.getConfig().getStringList("chat." + type + ".punishments." + vl2)){
 			sanction = sanction
-					.replace("&", "§")
 					.replace("%player%", p.getName())
 					.replace("%msg%", e.getMessage())
 					.replace("%type%", type2)
 					.replace("%flag%", flag)
-					.replace("%vl%", vl.get(id).get(type2).toString());
+					.replace("%vl%", vl.get(id).get(type2).toString())
+					.replace("&", "§");
 			
 			switch (sanction) {
 			case "cancel":
@@ -165,37 +154,29 @@ public class PlayerChat implements Listener {
 				break;
 			case "alert":
 				TextComponent alert = new TextComponent(Config.getConfig().getString("chat." + type + ".alert-message.content")
-						.replace("&", "§")
 						.replace("%player%", p.getName())
 						.replace("%msg%", e.getMessage())
 						.replace("%type%", type2)
 						.replace("%flag%", flag)
-						.replace("%vl%", vl.get(id).get(type2).toString()));
+						.replace("%vl%", vl.get(id).get(type2).toString())
+						.replace("&", "§"));
 				StringBuilder builder = new StringBuilder();
 				final int size = Config.getConfig().getStringList("chat." + type + ".alert-message.hover-message").size();
 				int i = 1;
 				for(final String hover : Config.getConfig().getStringList("chat." + type + ".alert-message.hover-message")) {
 					if(i == size){
-						builder.append(hover
-								.replace("&", "§")
-								.replace("%player%", p.getName())
-								.replace("%msg%", e.getMessage())
-								.replace("%type%", type2)
-								.replace("%flag%", flag)
-								.replace("%vl%", vl.get(id).get(type2).toString()));
-					} else {
-						builder.append(hover
-								.replace("&", "§")
-								.replace("%player%", p.getName())
-								.replace("%msg%", e.getMessage())
-								.replace("%type%", type2)
-								.replace("%flag%", flag)
-								.replace("%vl%", vl.get(id).get(type2).toString()) + "\n");
-					}
+						builder.append(hover);
+					} else builder.append(hover + "\n");
 					++i;
 				}
 				
-				alert.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(builder.toString())));
+				alert.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(builder.toString()
+						.replace("%player%", p.getName())
+						.replace("%msg%", e.getMessage())
+						.replace("%type%", type2)
+						.replace("%flag%", flag)
+						.replace("%vl%", vl.get(id).get(type2).toString())
+						.replace("&", "§"))));
 				
 				for(ProxiedPlayer pl : ProxyServer.getInstance().getPlayers()){
 					if(pl.hasPermission("deltamanager.chat." + type + ".alerts")){
