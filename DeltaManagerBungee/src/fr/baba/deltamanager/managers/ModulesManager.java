@@ -45,14 +45,14 @@ public class ModulesManager {
 			for(String module : entry.getValue()){
 				if(Config.getConfig().getBoolean(module)){
 					if(!sevents.contains(listener)){
-						System.out.println("Loading event : " + listener);
+						if(!Main.isStarting) System.out.println("Loading event : " + listener);
 						pm.registerListener(Main.getInstance(), entry.getKey());
 						sevents.add(listener);
 					}
 					break;
 				} else if(entry.getValue().indexOf(module) >= entry.getValue().size()){
 					if(sevents.contains(listener)){
-						System.out.println("Unloading event : " + listener);
+						if(!Main.isStarting) System.out.println("Unloading event : " + listener);
 						pm.unregisterListener(entry.getKey());
 						sevents.remove(listener);
 					}

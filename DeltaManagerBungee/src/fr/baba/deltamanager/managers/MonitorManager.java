@@ -21,6 +21,7 @@ import fr.baba.deltamanager.utils.PlayerUtils;
 import fr.baba.deltamanager.utils.TimeUtils;
 import fr.baba.deltamanager.utils.Webhook;
 import fr.baba.deltamanager.utils.Webhook.EmbedObject;
+import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -31,18 +32,12 @@ public class MonitorManager {
 	static Map<String, Instant> dates = new HashMap<>();
 	
 	public static void init(){
-		System.out.println("");
-		if(Config.getConfig().getInt("monitor.interval") <= 1){
-			System.out.println("monitor.interval must be greater than 1 second");
-		}
-		
+		CommandSender cs = Main.getInstance().getProxy().getConsole();
+		cs.sendMessage(TextComponent.fromLegacyText("§2[Monitor Module]§a Initialization..."));
+		if(Config.getConfig().getInt("monitor.interval") <= 1) System.out.println("monitor interval must be greater than 1 second, interval put to 120 seconds");
 		if(!status.isEmpty()) status.clear();
-		
 		if(Config.getConfig().getBoolean("monitor.check-all-servers")){
-			for(ServerInfo srv : ProxyServer.getInstance().getServers().values()){
-				String name = srv.getName();
-				status.put(name, 0);
-			}
+			for(ServerInfo srv : ProxyServer.getInstance().getServers().values()) status.put(srv.getName(), 0);
 		} else {
 			for(String name : Config.getConfig().getStringList("monitor.server-list")){
 				if(ProxyServer.getInstance().getServers().keySet().contains(name)){
@@ -52,9 +47,10 @@ public class MonitorManager {
 			}
 		}
 		
-		if(Config.getConfig().getBoolean("debug")) System.out.println(status.keySet());
+		if(status.size() <= 30 || Main.debug) System.out.println("	§2✔§a Servers (" + status.size() + "): " + status.keySet().toString().substring(1, status.keySet().toString().length() - 1));
 		
 		Monitor.trystart();
+		System.out.println("	§2✔§a Timer started");
 	}
 	
 	public static void clear(){
@@ -81,17 +77,15 @@ public class MonitorManager {
 				status.put(name, 0);
 				Duration d = Duration.between(dates.get(name), Instant.now());
 				
-				if(Config.getConfig().getBoolean("monitor.notify.back-online.log.enabled")){
-					System.out.println(Config.getConfig().getString("monitor.notify.back-online.log.log")
+				if(Config.getConfig().getBoolean("monitor.notify.back-online.log.enabled")) System.out.println(Config.getConfig().getString("monitor.notify.back-online.log.log")
 							.replace("%server%", name)
 							.replace("%duration%", TimeUtils.format(d))
-							.replace("&", "�"));
-				}
+							.replace("&", "§"));
 	        	
 				PlayerUtils.broadcast(Config.getConfig().getString("monitor.notify.back-online.staff-message")
 						.replace("%server%", name)
 						.replace("%duration%", TimeUtils.format(d))
-						.replace("&", "�"), "deltamanager.monitor.alerts");
+						.replace("&", "§"), "deltamanager.monitor.alerts");
 				
 				if(Config.getConfig().getBoolean("monitor.notify.back-online.webhook.enabled")){
 					ProxyServer.getInstance().getScheduler().runAsync(main, () -> {
@@ -144,12 +138,12 @@ public class MonitorManager {
     		if(Config.getConfig().getBoolean("monitor.notify.offline.log.enabled")){
     			System.out.println(Config.getConfig().getString("monitor.notify.offline.log.log")
 						.replace("%server%", name)
-						.replace("&", "�"));
+						.replace("&", "§"));
     		}
     		
     		PlayerUtils.broadcast(Config.getConfig().getString("monitor.notify.offline.staff-message")
 					.replace("%server%", name)
-					.replace("&", "�"), "deltamanager.monitor.alerts");
+					.replace("&", "§"), "deltamanager.monitor.alerts");
 			
 			if(Config.getConfig().getBoolean("monitor.notify.offline.webhook.enabled")){
 				ProxyServer.getInstance().getScheduler().runAsync(main, () -> {

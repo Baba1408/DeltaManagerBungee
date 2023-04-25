@@ -13,7 +13,7 @@ public class Monitor {
 	public static int delay = 120;
 	
 	public static void trystart() {
-		if(Config.getConfig().getInt("monitor.interval") != delay){
+		if(Config.getConfig().getInt("monitor.interval") != delay || task == null){
 			if(!Main.isStarting) System.out.println("Changing interval from " + delay + " seconds to " + Config.getConfig().getInt("monitor.interval") + " seconds");
 			delay = Config.getConfig().getInt("monitor.interval");
 			cancel();
@@ -23,7 +23,7 @@ public class Monitor {
 	
 	public static void start() {
 		task = ProxyServer.getInstance().getScheduler().schedule(Main.getInstance(), () -> {
-			//if(Config.getConfig().getBoolean("debug")) System.out.println("Refresh...");
+			if(Main.debug) System.out.println("Refresh...");
 			MonitorManager.refresh();
 		}, delay, delay, TimeUnit.SECONDS);
 	}

@@ -22,6 +22,7 @@ public class Main extends Plugin {
 	private static Main instance;
 	public static String prefix = "[DeltaManagerBungee]";
 	public static Boolean isStarting = true;
+	public static Boolean debug = false;
 	
 	static ArrayList<String> events = new ArrayList<>();
 	
@@ -60,6 +61,7 @@ public class Main extends Plugin {
 		cs.sendMessage(TextComponent.fromLegacyText(prefix + " Reload config..."));
 		Config.setup();
 		load();
+		if(Config.getConfig().getBoolean("debug")) debug = true;
 		cs.sendMessage(TextComponent.fromLegacyText(prefix + " The configuration has been successfully reloaded!"));
 	}
 	
