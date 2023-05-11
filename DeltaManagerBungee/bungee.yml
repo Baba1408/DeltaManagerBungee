@@ -10,27 +10,31 @@ commands:
     aliases: [dm]
   serverqueue:
     description: DeltaManager - save-connexion.reconnect Module
+  bungeeteleport:
+    description: Teleport to the server of a targeted player
+    permission: deltamanager.bungeeteleport
+    aliases: [btp]
 
 permissions:
   deltamanager.admin:
     description: All permissions for DeltaManger
     children:
       deltamanager.*
-
+  
   deltamanager.monitor.alerts:
     description: Receive servers monitoring alerts
-
+  
   deltamanager.reconnect:
     description: Order to be queued in case of a server outage
-
+  
   deltamanager.chat.command-blacklist.alerts:
     description: Receive chat command blacklist alerts
-
+  
   deltamanager.chat.message-blacklist.alerts:
     description: Receive chat message blacklist alerts
-
+  
   deltamanager.chat.command-blacklist.bypass:
     description: Bypass chat command blacklist
-
+  
   deltamanager.chat.message-blacklist.bypass:
     description: Bypass chat message blacklist

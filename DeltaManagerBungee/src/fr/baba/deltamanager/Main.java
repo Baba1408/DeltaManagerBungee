@@ -2,6 +2,7 @@ package fr.baba.deltamanager;
 
 import java.util.ArrayList;
 
+import fr.baba.deltamanager.commands.BungeeTeleport;
 import fr.baba.deltamanager.commands.DeltaManager;
 import fr.baba.deltamanager.commands.ServerQueue;
 import fr.baba.deltamanager.events.PlayerChat;
@@ -44,6 +45,8 @@ public class Main extends Plugin {
 		pm.registerCommand(this, new DeltaManager("deltamanager"));
 		pm.registerCommand(this, new DeltaManager("dm"));
 		pm.registerCommand(this, new ServerQueue("serverqueue"));
+		pm.registerCommand(this, new BungeeTeleport("bungeeteleport"));
+		pm.registerCommand(this, new BungeeTeleport("btp"));
 		
 		ModulesManager.init();
 		
