@@ -25,6 +25,7 @@ public class Main extends Plugin {
 	public static String prefix = "[DeltaManagerBungee]";
 	public static Boolean isStarting = true;
 	public static Boolean debug = false;
+	public static Boolean cache = false;
 	
 	static ArrayList<String> events = new ArrayList<>();
 	
@@ -42,6 +43,8 @@ public class Main extends Plugin {
 		getProxy().registerChannel("delta:manager");
 		//getProxy().registerChannel("delta:managerupdate");
 		
+		if(Config.getCache().getBoolean("save-in-cache")) cache = true;
+		
 		//Commands
 		pm.registerCommand(this, new DeltaManager("deltamanager"));
 		pm.registerCommand(this, new DeltaManager("dm"));
@@ -55,6 +58,7 @@ public class Main extends Plugin {
 		UpdatesManager.check();
 		if(!Config.cachefile.delete()) getLogger().warning("The cache file could not be deleted");
 		isStarting = false;
+		cache = false;
 	}
 	
 	public static Main getInstance(){

@@ -46,7 +46,7 @@ public class MonitorManager {
 			}
 		}
 		
-		if(Config.getConfig().getBoolean("save-in-cache")){
+		if(Main.cache){
 			for(Entry<String, Integer> e : status.entrySet()){
 				if(Config.getCache().get("monitor." + e.getKey()) != null){
 					status.put(e.getKey(), Config.getCache().getInt("monitor." + e.getKey()));
