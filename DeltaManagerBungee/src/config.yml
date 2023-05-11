@@ -1,4 +1,8 @@
+# Can be used to help you find errors.
 debug: false
+
+# Save some information in a cache file before the server closing.
+save-in-cache: true
 
 # See: https://timezonedb.com/time-zones
 ZoneId: 'Europe/Paris'

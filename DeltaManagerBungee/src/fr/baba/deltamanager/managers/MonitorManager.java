@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import fr.baba.deltamanager.Config;
 import fr.baba.deltamanager.Main;
@@ -42,6 +43,14 @@ public class MonitorManager {
 					String nname = ProxyServer.getInstance().getServers().get(name).getName();
 					status.put(nname, 0);
 				} else System.out.println("The server " + name + " was not found");
+			}
+		}
+		
+		if(Config.getConfig().getBoolean("save-in-cache")){
+			for(Entry<String, Integer> e : status.entrySet()){
+				if(Config.getCache().get("monitor." + e.getKey()) != null){
+					status.put(e.getKey(), Config.getCache().getInt("monitor." + e.getKey()));
+				}
 			}
 		}
 		

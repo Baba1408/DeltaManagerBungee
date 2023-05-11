@@ -1,6 +1,7 @@
 package fr.baba.deltamanager;
 
 import java.util.ArrayList;
+import java.util.Map.Entry;
 
 import fr.baba.deltamanager.commands.BungeeTeleport;
 import fr.baba.deltamanager.commands.DeltaManager;
@@ -52,6 +53,7 @@ public class Main extends Plugin {
 		
 		load();
 		UpdatesManager.check();
+		if(!Config.cachefile.delete()) getLogger().warning("The cache file could not be deleted");
 		isStarting = false;
 	}
 	
@@ -134,5 +136,17 @@ public class Main extends Plugin {
 	@Override
 	public void onDisable(){
 		getProxy().unregisterChannel("delta:manager");
+		
+		if(Config.getConfig().getBoolean("save-in-cache")){
+			Config.setupCache();
+			
+			for(Entry<String, Integer> e : MonitorManager.getStatus().entrySet()){
+				if(e.getValue() > 0){
+					Config.getCache().set("monitor." + e.getKey(), e.getValue());
+				}
+			}
+			
+			Config.saveCache();
+		}
 	}
 }
