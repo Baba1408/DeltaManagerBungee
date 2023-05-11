@@ -26,11 +26,9 @@ public class Config {
 		String config = "config";
 		configfile = new File(main.getDataFolder(), config + ".yml");
 		
-		if(!configfile.exists()) {
-			//main.getDataFolder().mkdir();
-				
+		if(!configfile.exists()) {	
 			try {
-				Files.copy(main.getResourceAsStream(config + ".yml"), // This will copy your default config.yml from the jar
+				Files.copy(main.getResourceAsStream(config + ".yml"),
 					configfile.toPath());
 			} catch (IOException e){
 				e.printStackTrace();
@@ -67,11 +65,11 @@ public class Config {
 	//Cache
 	public static void setupCache() {
 		String config = "cache";
-		configfile = new File(main.getDataFolder(), config + ".yml");
+		cachefile = new File(main.getDataFolder(), config + ".yml");
 		
-		if(!configfile.exists()) {
+		if(!cachefile.exists()) {
 			try {
-				Files.copy(main.getResourceAsStream(config + ".yml"), // This will copy your default config.yml from the jar
+				Files.copy(main.getResourceAsStream(config + ".yml"),
 					cachefile.toPath());
 			} catch (IOException e){
 				e.printStackTrace();
