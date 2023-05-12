@@ -50,7 +50,9 @@ public class Main extends Plugin {
 		
 		load();
 		UpdatesManager.check();
-		if(!Config.cachefile.delete()) getLogger().warning("The cache file could not be deleted");
+		if(Config.cachefile.delete()){
+			getLogger().info("The cache file has been deleted");
+		} else getLogger().warning("The cache file could not be deleted");
 		isStarting = false;
 		cache = false;
 	}
@@ -68,7 +70,6 @@ public class Main extends Plugin {
 		cs.sendMessage(TextComponent.fromLegacyText(prefix + " The configuration has been successfully reloaded!"));
 	}
 	
-	@SuppressWarnings("unused")
 	public static void load(){
 		PluginManager pm = instance.getProxy().getPluginManager();
 		CommandSender cs = instance.getProxy().getConsole();
@@ -94,6 +95,7 @@ public class Main extends Plugin {
 			}
 			
 			Config.saveCache();
+			getLogger().info("All data have been saved in the cache file.");
 		}
 	}
 }
