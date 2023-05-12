@@ -71,7 +71,7 @@ public class Main extends Plugin {
 	}
 	
 	public static void load(){
-		PluginManager pm = instance.getProxy().getPluginManager();
+		//PluginManager pm = instance.getProxy().getPluginManager();
 		CommandSender cs = instance.getProxy().getConsole();
 		
 		if(isStarting){
