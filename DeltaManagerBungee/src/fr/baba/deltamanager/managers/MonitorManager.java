@@ -54,7 +54,9 @@ public class MonitorManager {
 			}
 		}
 		
-		if(status.size() <= 30 || Main.debug) System.out.println("	§2✔§a Servers (" + status.size() + "): " + status.keySet().toString().substring(1, status.keySet().toString().length() - 1));
+		if(status.size() <= 30 || Main.debug){
+			System.out.println("	§2✔§a Servers (" + status.size() + "): " + status.keySet().toString().substring(1, status.keySet().toString().length() - 1));
+		} else System.out.println("	§2✔§a Servers (" + status.size() + "): not displayed because over 30");
 		
 		Monitor.trystart();
 		System.out.println("	§2✔§a Timer started");

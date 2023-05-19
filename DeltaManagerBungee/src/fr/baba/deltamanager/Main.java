@@ -71,12 +71,11 @@ public class Main extends Plugin {
 	}
 	
 	public static void load(){
-		//PluginManager pm = instance.getProxy().getPluginManager();
 		CommandSender cs = instance.getProxy().getConsole();
 		
 		if(isStarting){
-			cs.sendMessage(TextComponent.fromLegacyText("§2[DeltaManagerBungee]§a Loading..."));
-		} else cs.sendMessage(TextComponent.fromLegacyText("§2[DeltaManagerBungee]§a Reloading..."));
+			cs.sendMessage(TextComponent.fromLegacyText("§2" + prefix + "§a Loading..."));
+		} else cs.sendMessage(TextComponent.fromLegacyText("§2" + prefix + " §a Reloading..."));
 		
 		ModulesManager.reload();
 	}
