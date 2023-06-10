@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 
 import fr.baba.deltamanager.Config;
 import fr.baba.deltamanager.Main;
+import fr.baba.deltamanager.managers.ReconnectManager;
 import fr.baba.deltamanager.utils.Webhook;
 import fr.baba.deltamanager.utils.Webhook.EmbedObject;
 import net.md_5.bungee.api.ProxyServer;
@@ -32,6 +33,8 @@ public class ServerSwitch implements Listener {
 					.replace("%to%", p.getServer().getInfo().getName())
 					.replace("&", "§")));
 		}
+		
+		ReconnectManager.removePlayer(p, true);
 		
 		if(Config.getConfig().getBoolean("webhook.switch.enabled")){
 			ProxyServer.getInstance().getScheduler().runAsync(main, () -> {
