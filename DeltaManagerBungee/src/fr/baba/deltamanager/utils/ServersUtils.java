@@ -9,34 +9,19 @@ import net.md_5.bungee.api.config.ServerInfo;
 
 public class ServersUtils {
 
-	@SuppressWarnings("deprecation")
 	public static boolean pingName(String name){
 		ServerInfo srv = ProxyServer.getInstance().getServers().get(name);
-		Socket s = new Socket();
-		
-		try {
-			s.connect(new InetSocketAddress(srv.getAddress().getAddress().getHostAddress(), srv.getAddress().getPort()), 20);
-			s.close();
-			return true;
-		} catch (IOException e) {
-			//e.printStackTrace();
-		}
-		
-		return false;
+		return srv != null ? pingSRV(srv) : false;
 	}
 	
 	@SuppressWarnings("deprecation")
 	public static boolean pingSRV(ServerInfo srv){
-		Socket s = new Socket();
-		
-		try {
-			s.connect(new InetSocketAddress(srv.getAddress().getAddress().getHostAddress(), srv.getAddress().getPort()), 20);
-			s.close();
-			return true;
+		try (Socket s = new Socket()) { //Socket s = new Socket();
+			s.connect(new InetSocketAddress(srv.getAddress().getAddress().getHostAddress(), srv.getAddress().getPort()), 500);
+			return true; //s.close();
 		} catch (IOException e) {
 			//e.printStackTrace();
 		}
-		
 		return false;
 	}
 }
