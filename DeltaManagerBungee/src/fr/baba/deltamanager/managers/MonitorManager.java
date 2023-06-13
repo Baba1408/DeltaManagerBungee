@@ -66,8 +66,10 @@ public class MonitorManager {
 		Monitor.cancel();
 	}
 	
+	@SuppressWarnings("unused")
 	public static void refresh(){
 		ArrayList<String> offlines = new ArrayList<>();
+		ArrayList<String> onlines = new ArrayList<>();
 		
 		for(String name : status.keySet()){
 			ServerInfo srv = ProxyServer.getInstance().getServers().get(name);
@@ -108,7 +110,7 @@ public class MonitorManager {
 						.replace("%duration%", TimeUtils.format(d))
 						.replace("&", "§"), "deltamanager.monitor.alerts");
 				
-				if(Config.getConfig().getBoolean("monitor.notify.back-online.webhook.enabled")){
+				if(false && Config.getConfig().getBoolean("monitor.notify.back-online.webhook.enabled")){
 					ProxyServer.getInstance().getScheduler().runAsync(main, () -> {
 						String path = "monitor.notify.back-online.webhook.";
 						DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -141,49 +143,84 @@ public class MonitorManager {
 				}
 				
 				dates.remove(name);
+				onlines.add(name);
 			}
 		}
 		
-		if(offlines.size() < 1 || !Config.getConfig().getBoolean("monitor.notify.offline.webhook.enabled")) return;
-		
-		String path = "monitor.notify.offline.webhook.";
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-		ZonedDateTime now = ZonedDateTime.now();
-		ZonedDateTime zone = now.withZoneSameInstant(ZoneId.of(Config.getConfig().getString("ZoneId")));
-		
-		Webhook webhook = new Webhook(Config.getConfig().getString(path + "url"));
-		EmbedObject embed = new Webhook.EmbedObject();
-		
-		if(offlines.size() == 1){
-			embed.setAuthor(Config.getConfig().getString(path + "author")
-					.replace("%server%", offlines.get(0)), "", Config.getConfig().getString(path + "authoricon")
-					.replace("%server%", offlines.get(0)))
-				.setTitle(Config.getConfig().getString(path + "title")
-						.replace("%server%", offlines.get(0)))
-				.setColor(Color.red)
-				.setFooter(dtf.format(zone), "");
-		} else {
-			StringBuilder sb = new StringBuilder();
+		if(offlines.size() > 0 && Config.getConfig().getBoolean("monitor.notify.offline.webhook.enabled")){
+			String path = "monitor.notify.offline.webhook.";
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+			ZonedDateTime now = ZonedDateTime.now();
+			ZonedDateTime zone = now.withZoneSameInstant(ZoneId.of(Config.getConfig().getString("ZoneId")));
 			
-			for(String name : offlines) sb.append(Config.getConfig().getString(path + "title")
-					.replace("%server%", name) + "\\u000A");
+			Webhook webhook = new Webhook(Config.getConfig().getString(path + "url"));
+			EmbedObject embed = new Webhook.EmbedObject();
 			
 			embed.setAuthor(Config.getConfig().getString(path + "author")
 					.replace("%server%", offlines.get(0)), "", Config.getConfig().getString(path + "authoricon")
 					.replace("%server%", offlines.get(0)))
-				.setTitle("Several servers are down")
-				.setDescription(sb.toString())
 				.setColor(Color.red)
 				.setFooter(dtf.format(zone), "");
+			
+			if(offlines.size() == 1){
+				embed.setTitle(Config.getConfig().getString(path + "title")
+							.replace("%server%", offlines.get(0)));
+			} else {
+				StringBuilder sb = new StringBuilder();
+				
+				for(String name : offlines) sb.append(Config.getConfig().getString(path + "title")
+						.replace("%server%", name) + "\\u000A");
+				
+				embed.setTitle("Several servers are down (" + offlines.size() + ")")
+					.setDescription(sb.toString());
+			}
+			
+			webhook.addEmbed(embed);
+			
+			try {
+				webhook.execute();
+			} catch (IOException e) {
+				e.printStackTrace();
+				ProxyServer.getInstance().getConsole().sendMessage(TextComponent.fromLegacyText("[DeltaManagerBungee] Error when sending the Webhook"));
+			}
 		}
 		
-		webhook.addEmbed(embed);
-		
-		try {
-			webhook.execute();
-		} catch (IOException e) {
-			e.printStackTrace();
-			ProxyServer.getInstance().getConsole().sendMessage(TextComponent.fromLegacyText("[DeltaManagerBungee] Error when sending the Webhook"));
+		if(onlines.size() > 0 && Config.getConfig().getBoolean("monitor.notify.back-online.webhook.enabled")){
+			String path = "monitor.notify.back-online.webhook.";
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+			ZonedDateTime now = ZonedDateTime.now();
+			ZonedDateTime zone = now.withZoneSameInstant(ZoneId.of(Config.getConfig().getString("ZoneId")));
+			
+			Webhook webhook = new Webhook(Config.getConfig().getString(path + "url"));
+			EmbedObject embed = new Webhook.EmbedObject();
+			
+			embed.setAuthor(Config.getConfig().getString(path + "author")
+					.replace("%server%", onlines.get(0)), "", Config.getConfig().getString(path + "authoricon")
+					.replace("%server%", onlines.get(0)))
+				.setColor(Color.GREEN)
+				.setFooter(dtf.format(zone), "");
+			
+			if(onlines.size() == 1){
+				embed.setTitle(Config.getConfig().getString(path + "title")
+							.replace("%server%", onlines.get(0)));
+			} else {
+				StringBuilder sb = new StringBuilder();
+				
+				for(String name : onlines) sb.append(Config.getConfig().getString(path + "title")
+						.replace("%server%", name) + "\\u000A");
+				
+				embed.setTitle("Several servers are back online (" + onlines.size() + ")")
+					.setDescription(sb.toString());
+			}
+			
+			webhook.addEmbed(embed);
+			
+			try {
+				webhook.execute();
+			} catch (IOException e) {
+				e.printStackTrace();
+				ProxyServer.getInstance().getConsole().sendMessage(TextComponent.fromLegacyText("[DeltaManagerBungee] Error when sending the Webhook"));
+			}
 		}
 	}
 	
